@@ -1,24 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/26 21:22:49 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/07/26 21:30:23 by hbenmoha         ###   ########.fr       */
+/*   Created: 2025/07/26 21:21:13 by hbenmoha          #+#    #+#             */
+/*   Updated: 2025/07/26 21:33:48 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo_header.h"
 
-int main(int ac, char *av[])
+void    fork_init(t_table *table)
 {
-	t_table	table;
-	parse_intput(&table); //todo parse input
-	fork_init(&table);    //todo initialize fork()
-	philos_init();  //todo initialize philo()
-	philo_dining(); //todo philosophers dining
-	clean_up();     //todo clean memory resources!
-	return (0);
+    int i;
+
+    i = 0;
+    table->forks = malloc(sizeof(pthread_mutex_t) * table->philo_nb);
+    while (i < table->philo_nb)
+    {
+        pthread_mutex_init(&table->forks[i], NULL);
+        i++;
+    }
+    
+    
+}
+
+void    philos_init(t_table *table)
+{
+    table->philos_arr = malloc(sizeof(t_philos) * table->philo_nb);
 }
