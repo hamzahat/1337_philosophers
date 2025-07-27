@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 18:35:19 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/07/27 20:04:57 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/07/27 20:27:59 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,26 +28,26 @@ typedef struct s_table
 	t_philo			*philos_arr;	//? ptr to an array of philos ( t_philo struct )
 	t_fork			*forks_arr;		//? ptr to an array of forks ( mutex )
 	int				philo_nb;		//? number of philos ( from argv )
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
+	int				time_to_die;	//?
+	int				time_to_eat;	//?
+	int				time_to_sleep;	//?
 	int				meals_nb;		//? number of meals every philo should eat!
 }	t_table;
 
 typedef struct s_philo
 {
-	t_fork			*left_fork;
-	t_fork			*right_fork;
-	long			last_meal_time;
-	int				philo_id;
-	int				nb_meals;
+	t_fork			*left_fork;			//?
+	t_fork			*right_fork;		//?
+	long			last_meal_time;		//?
+	int				philo_id;			//?
+	int				nb_meals;			//?
 	pthread_t		thread_id;			//? philo is thread id
 }	t_philo;
 
 typedef struct s_fork
 {
-	pthread_mutex_t	fork;
-	int				fork_id;
+	pthread_mutex_t	fork;		//?
+	int				fork_id;	//?
 }	t_fork;
 
 //* * * functions prototypes * * *//
