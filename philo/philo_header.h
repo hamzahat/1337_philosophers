@@ -3,6 +3,9 @@
 
 # include <pthread.h>
 # include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <sys/time.h>
 
 typedef struct s_table
 {
@@ -11,11 +14,14 @@ typedef struct s_table
     int philo_nb;
 }   t_table;
 
-typedef struct s_philos
+typedef struct s_philo
 {
-    int id;
+    int philo_id;
+	// *left_fork
+	// *right_fork
+	int	nb_meals;
 
-}   t_philos;
+}   t_philo;
 
 
 #endif
