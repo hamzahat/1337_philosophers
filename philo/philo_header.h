@@ -3,15 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   philo_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hamza_hat <hamza_hat@student.42.fr>        +#+  +:+       +#+        */
+/*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 18:35:19 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/07/29 13:11:56 by hamza_hat        ###   ########.fr       */
+/*   Updated: 2025/07/29 22:08:18 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
+
+//* * * Macros for ft_safe_malloc keys:
+# define ALLOCATE 1
+# define FREE_ALL 0
+# define FREE_ONE 2
 
 //* * * headers * * *//
 
@@ -22,6 +27,13 @@
 # include <sys/time.h>
 
 //* * * structures * * *//
+
+//? ft_saf_malloc struct:
+typedef struct s_mem_node
+{
+	void				*address;
+	struct s_mem_node	*next;
+}						t_mem_node;
 
 typedef struct s_table
 {
