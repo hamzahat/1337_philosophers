@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_1.c                                          :+:      :+:    :+:   */
+/*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hamza_hat <hamza_hat@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/26 21:21:13 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/07/29 13:16:07 by hamza_hat        ###   ########.fr       */
+/*   Created: 2025/07/29 12:57:14 by hamza_hat         #+#    #+#             */
+/*   Updated: 2025/07/29 12:57:50 by hamza_hat        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo_header.h"
 
-//? print str in fd;
-void    ft_putstr_fd(int fd, char *str)
+void    forks_init(t_table *table)
 {
-    write(fd, str, ft_strlen(str));
-}
-
-//? calculate len of str;
-size_t  ft_strlen(char *str)
-{
-    size_t  i;
+    int i;
 
     i = 0;
-    if (!str)
-        return (0);
-    while (*str)
+    table->forks_arr = malloc(sizeof(pthread_mutex_t) * table->philo_nb);
+    while (i < table->philo_nb)
+    {
+        pthread_mutex_init(&table->forks_arr[i], NULL);
         i++;
-    return (i);
+    }
+    
+    
+}
+
+void    philos_init(t_table *table)
+{
+    table->philos_arr = malloc(sizeof(t_philo) * table->philo_nb);
 }

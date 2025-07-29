@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_header.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hamza_hat <hamza_hat@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 18:35:19 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/07/27 20:27:59 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:11:56 by hamza_hat        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ typedef struct s_fork
 
 //* * * functions prototypes * * *//
 
+int		parse_intput(int ac, char *av[], t_table *table);
+void    ft_putstr_fd(int fd, char *str);
+size_t	ft_strlen(char *str);
 
 #endif
 
