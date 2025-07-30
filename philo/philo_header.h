@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 18:35:19 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/07/29 22:08:18 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/07/30 17:23:27 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <limits.h>
 
 //* * * structures * * *//
 
@@ -34,6 +35,22 @@ typedef struct s_mem_node
 	void				*address;
 	struct s_mem_node	*next;
 }						t_mem_node;
+
+typedef struct s_fork
+{
+	pthread_mutex_t	fork;		//?
+	int				fork_id;	//?
+}	t_fork;
+
+typedef struct s_philo
+{
+	t_fork			*left_fork;			//?
+	t_fork			*right_fork;		//?
+	long			last_meal_time;		//?
+	int				philo_id;			//?
+	int				nb_meals;			//?
+	pthread_t		thread_id;			//? philo is thread id
+}	t_philo;
 
 typedef struct s_table
 {
@@ -46,27 +63,30 @@ typedef struct s_table
 	int				meals_nb;		//? number of meals every philo should eat!
 }	t_table;
 
-typedef struct s_philo
-{
-	t_fork			*left_fork;			//?
-	t_fork			*right_fork;		//?
-	long			last_meal_time;		//?
-	int				philo_id;			//?
-	int				nb_meals;			//?
-	pthread_t		thread_id;			//? philo is thread id
-}	t_philo;
-
-typedef struct s_fork
-{
-	pthread_mutex_t	fork;		//?
-	int				fork_id;	//?
-}	t_fork;
 
 //* * * functions prototypes * * *//
 
+//? --- parsing functions ---
+
 int		parse_intput(int ac, char *av[], t_table *table);
-void    ft_putstr_fd(int fd, char *str);
+void	ft_putstr_fd(int fd, char *str);
 size_t	ft_strlen(char *str);
+int		check_args_number(int ac);
+int		converte_args_to_nb(t_table *table, char *av[]);
+int		ft_atoi(char *str);
+void	printf_input_data(t_table table);
+void	initialize_table_data(t_table *table);
+
+//? --- data initialization ---
+
+void	philos_init(t_table *table);
+void	forks_init(t_table *table);
+
+//? --- garbage collector functions ---
+
+void	*ft_safe_malloc(size_t size, int key, void *to_delete);
+int		allocate_philos_arr(t_table *table);
+int		allocate_forks_arr(t_table *table);
 
 #endif
 
