@@ -1,0 +1,64 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   data_init.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/29 12:57:14 by hamza_hat         #+#    #+#             */
+/*   Updated: 2025/08/02 09:47:38 by hbenmoha         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../philo_header.h"
+
+//? assign forks for every philo in the table;
+static void	assign_forks_to_philos(t_philo *philo, t_fork *forks, int philo_pos)
+{
+	if ((philo->philo_id % 2) != 0) //* odd (1 3 5)
+	{
+		philo->first_fork = &forks[(philo_pos + 1) % philo->table->philo_nb];
+		philo->second_fork = &forks[philo_pos];
+	}
+	else if ((philo->philo_id % 2) == 0) //* even (2 4 6)
+	{
+		philo->first_fork = &forks[philo_pos];
+		philo->second_fork = &forks[(philo_pos + 1) % philo->table->philo_nb];
+	}
+}
+//! test if we give one philo / fork it will lead to deadlock
+
+//? initialyze forks data;
+int	forks_init(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->philo_nb)
+	{
+		if (pthread_mutex_init(&table->forks_arr[i].fork, NULL))
+			return (1);
+		table->forks_arr[i].fork_id = i;
+		i++;
+	}
+	return (0);
+}
+
+//? initialyze philos data;
+int	philos_init(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->philo_nb)
+	{
+		table->philos_arr[i].last_meal_time = 0;
+		table->philos_arr[i].philo_id = i + 1;
+		table->philos_arr[i].meals_counter = 0;
+		table->philos_arr[i].meals_full = false;
+		table->philos_arr[i].table = table;
+		assign_forks_to_philos(&table->philos_arr[i], table->forks_arr, i);
+		i++;
+	}
+	return (0);
+}
