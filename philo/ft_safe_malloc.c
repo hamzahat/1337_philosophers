@@ -6,13 +6,11 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 22:06:36 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/07/30 12:05:45 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/02 14:21:52 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//todo: remve exit fun form your ft_safe_malloc garbage collector!
-
-#include "../philo_header.h"
+#include "philo_header.h"
 
 //? Zero out a block of memory.
 static void	ft_bzero(void *s, size_t len)

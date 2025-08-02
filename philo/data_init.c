@@ -6,11 +6,11 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 12:57:14 by hamza_hat         #+#    #+#             */
-/*   Updated: 2025/08/02 09:47:38 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/02 14:21:31 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo_header.h"
+#include "philo_header.h"
 
 //? assign forks for every philo in the table;
 static void	assign_forks_to_philos(t_philo *philo, t_fork *forks, int philo_pos)

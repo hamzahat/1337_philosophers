@@ -6,11 +6,11 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 20:25:37 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/01 12:17:33 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/02 14:21:14 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo_header.h"
+#include "philo_header.h"
 
 //? converte argv to valide numbers
 static int	converte_args_to_nb(t_table *table, char *av[])

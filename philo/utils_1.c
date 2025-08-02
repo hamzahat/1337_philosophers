@@ -6,11 +6,11 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:21:13 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/01 12:17:13 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/02 14:21:04 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo_header.h"
+#include "philo_header.h"
 
 //? print str in fd;
 void    ft_putstr_fd(int fd, char *str)

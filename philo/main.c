@@ -6,11 +6,11 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:22:49 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/02 09:44:54 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/02 14:20:45 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo_header.h"
+#include "philo_header.h"
 
 int main(int ac, char *av[])
 {
@@ -26,12 +26,12 @@ int main(int ac, char *av[])
 	if (forks_init(&table))
 		return (ft_safe_malloc(0, FREE_ALL, NULL), 1);
 
-//todo: initialize philos (in progress)
+//* initialize philos data + assign forks;
 	if (philos_init(&table))
 		return (ft_safe_malloc(0, FREE_ALL, NULL), 1);
 
-//todo: philosophers dining
-	// philo_dining_start();
+//todo: philosophers dining (in progress)
+	philo_dining_start(&table);
 
 //todo clean memory resources!
 
@@ -39,3 +39,4 @@ int main(int ac, char *av[])
 }
 
 //? if a thread_init faild we should free the old threads (pthread_mutex_destroy()) !?
+//todo: handle if the philo_nb == 0
