@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 18:35:19 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/01 10:46:49 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/02 07:59:03 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_fork
 
 typedef struct s_philo
 {
-	t_fork			*second_fork;			//? ptr to t_fork (mutex) left fork
+	t_fork			*second_fork;		//? ptr to t_fork (mutex) left fork
 	t_fork			*first_fork;		//? ptr to t_fork (mutex) right fork
 	long			last_meal_time;		//? the last meal time
 	int				philo_id;			//? philo id
