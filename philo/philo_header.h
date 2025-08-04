@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 18:35:19 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/02 07:59:03 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:31:33 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # define FREE_ALL 0
 # define FREE_ONE 2
 
-//* * * headers * * *//
+//* * * Headers * * *//
 
 # include <pthread.h>
 # include <stdio.h>
@@ -27,10 +27,20 @@
 # include <sys/time.h>
 # include <limits.h>
 # include <stdbool.h>
+# include <string.h>
 
-//* * * structures * * *//
+//* * * Philo routine messages * * *//
+
+# define EAT "is eating"
+# define SLEEP "is sleeping"
+# define THINK "is thinking"
+# define FORK "has taken a fork"
+# define DIE "died"
+
+//* * * Structures * * *//
 
 typedef struct s_table t_table;
+typedef struct timeval t_timeval;
 
 //? ft_saf_malloc struct:
 typedef struct s_mem_node
@@ -61,6 +71,7 @@ struct s_table
 {
 	t_philo			*philos_arr;	//? ptr to an array of philos ( t_philo struct )
 	t_fork			*forks_arr;		//? ptr to an array of forks ( mutex )
+	pthread_t		monitor;		//? ptr to the monitor who will control othere philos
 	int				philo_nb;		//? number of philos ( from argv )
 	int				time_to_die;	//? time to die in ms
 	int				time_to_eat;	//? time to eat in ms
@@ -71,7 +82,7 @@ struct s_table
 };
 
 
-//* * * functions prototypes * * *//
+//* * * Functions prototypes * * *//
 
 //? --- parsing functions ---
 
@@ -83,14 +94,28 @@ void	printf_input_data(t_table table);
 
 //? --- data initialization ---
 
-int	philos_init(t_table *table);
-int	forks_init(t_table *table);
+int		init_philos_and_monitor_threads(t_table *table);
+int		philos_init(t_table *table);
+int		forks_init(t_table *table);
+void	initialize_table_data(t_table *table);
 
-//? --- garbage collector functions ---
+//? --- memory management functions ---
 
 void	*ft_safe_malloc(size_t size, int key, void *to_delete);
 int		allocate_philos_arr(t_table *table);
 int		allocate_forks_arr(t_table *table);
+void	clean_up(void);
+
+//? --- philo dining functions ---
+
+int		philo_dining_start(t_table *table);
+void	*philo_routine(void *arg);
+void	*monitor_fun(void	*arg);
+
+//? --- utils functions ---
+
+long	get_time_pass(void);
+
 
 #endif
 

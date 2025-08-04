@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:22:49 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/02 14:20:45 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:57:21 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,14 @@ int main(int ac, char *av[])
 		return (ft_safe_malloc(0, FREE_ALL, NULL), 1);
 
 //todo: philosophers dining (in progress)
-	philo_dining_start(&table);
+	if (philo_dining_start(&table))
+		return (ft_safe_malloc(0, FREE_ALL, NULL), 1);
 
 //todo clean memory resources!
-
+	clean_up();
 	return (0);
 }
 
 //? if a thread_init faild we should free the old threads (pthread_mutex_destroy()) !?
 //todo: handle if the philo_nb == 0
+//! test if we give one philo / fork it will lead to deadlock !? (in assign_forks_to_philos())

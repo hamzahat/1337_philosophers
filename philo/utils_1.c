@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:21:13 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/02 14:21:04 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:31:44 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,27 @@ int	allocate_forks_arr(t_table *table)
 	return (0);
 }
 
-//? debugging functions:
+//? clean memory resources;
+void	clean_up(void)
+{
+	ft_safe_malloc(0, FREE_ALL, NULL);
+}
+
+//? get the time pass frome the start of the programme until now!
+long	get_time_pass(void)
+{
+	static long	start_time;
+	long		current_time;
+	t_timeval	time;
+
+	gettimeofday(&time, NULL);
+	current_time = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+	if (start_time == 0)
+		start_time = current_time;
+	return (current_time - start_time);
+}
+
+//? debugging functions;
 void	printf_input_data(t_table table)
 {
 	printf("correct input!\n");
@@ -89,5 +109,3 @@ void	printf_input_data(t_table table)
 	printf("time_to_sleep: %d\n", table.time_to_sleep);
 	printf("number_of_times_each_philosopher_must_eat: %d\n", table.meals_nb);
 }
-
-

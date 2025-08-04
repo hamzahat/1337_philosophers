@@ -6,14 +6,14 @@
 #    By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/27 18:35:35 by hbenmoha          #+#    #+#              #
-#    Updated: 2025/08/02 14:20:15 by hbenmoha         ###   ########.fr        #
+#    Updated: 2025/08/04 13:22:09 by hbenmoha         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
-SRC = data_init.c ft_safe_malloc.c main.c parsing.c utils_1.c
+SRC = data_init.c ft_safe_malloc.c main.c parsing.c utils_1.c philo_dining.c
 OBJ = $(SRC:.c=.o)
 DEPS = philo.h
 

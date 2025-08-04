@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 12:57:14 by hamza_hat         #+#    #+#             */
-/*   Updated: 2025/08/02 14:21:31 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:54:38 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,15 @@ static void	assign_forks_to_philos(t_philo *philo, t_fork *forks, int philo_pos)
 		philo->second_fork = &forks[(philo_pos + 1) % philo->table->philo_nb];
 	}
 }
-//! test if we give one philo / fork it will lead to deadlock
+
+//? initialize table struct with default values;
+void	initialize_table_data(t_table *table)
+{
+	if (!table)
+		return ;
+	memset(table, 0, sizeof(*table));
+	table->meals_nb = -1;
+}
 
 //? initialyze forks data;
 int	forks_init(t_table *table)
@@ -60,5 +68,22 @@ int	philos_init(t_table *table)
 		assign_forks_to_philos(&table->philos_arr[i], table->forks_arr, i);
 		i++;
 	}
+	return (0);
+}
+
+//? initialyze philos threads;
+int	init_philos_and_monitor_threads(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->philo_nb)
+	{
+		if (pthread_create(&table->philos_arr[i].thread_id, NULL, philo_routine, &table->philos_arr[i]))
+			return (1);
+		i++;
+	}
+	if (pthread_create(&table->monitor, NULL, monitor_fun, table))
+		return (1);
 	return (0);
 }

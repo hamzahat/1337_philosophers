@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 20:25:37 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/02 14:21:14 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/04 12:46:35 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,6 @@ static int	converte_args_to_nb(t_table *table, char *av[])
 		if ((table->meals_nb = ft_atoi(av[5])) == -1 || table->meals_nb < 1)
 			return (ft_putstr_fd(2, "Error: number_of_times_each_philosopher_must_eat is not correct!\n"), 1);
 	return (0);
-}
-
-//? initialize table struct with default values;
-static void	initialize_table_data(t_table *table)
-{
-	if (!table)
-		return ;
-	table->philo_nb = 0;
-	table->time_to_die = 0;
-	table->time_to_eat = 0;
-	table->time_to_sleep = 0;
-	table->meals_nb = -1;
-	table->start_simulation = 0;
-	table->end_simulation = false;
-	table->forks_arr = NULL;
-	table->philos_arr = NULL;
 }
 
 //? check if argc number is correct! (5 || 6)
