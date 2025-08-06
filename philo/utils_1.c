@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:21:13 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/04 15:31:44 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/06 11:18:46 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	clean_up(void)
 	ft_safe_malloc(0, FREE_ALL, NULL);
 }
 
-//? get the time pass frome the start of the programme until now!
+//* get the time pass frome the start of the programme until now!
 long	get_time_pass(void)
 {
 	static long	start_time;
@@ -98,6 +98,96 @@ long	get_time_pass(void)
 		start_time = current_time;
 	return (current_time - start_time);
 }
+
+// * * * Getters and Setters * * * //
+
+//* get the value of end-of-simulation safely;
+bool	get_end_simulation(t_table *table)
+{
+	bool	status;
+
+	pthread_mutex_lock(&table->end_simu_mutex);
+	status = table->end_simulation;
+	pthread_mutex_unlock(&table->end_simu_mutex);
+	return (status);
+}
+
+//* set the value of end-of-simulation safely;
+void	set_end_simulation(t_table *table, bool value)
+{
+	pthread_mutex_lock(&table->end_simu_mutex);
+	table->end_simulation = value;
+	pthread_mutex_unlock(&table->end_simu_mutex);
+}
+
+//* get the value forme meals-counter safely;
+int	get_meals_counter(t_philo *philo)
+{
+	int	count;
+
+	pthread_mutex_lock(&philo->meal_mutex);
+	count = philo->meals_counter;
+	pthread_mutex_unlock(&philo->meal_mutex);
+	return (count);
+}
+
+//* increment the value to meals-counter safely;
+void	increment_meals_counter(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->meal_mutex);
+	philo->meals_counter++;
+	pthread_mutex_unlock(&philo->meal_mutex);
+}
+
+//* get the value from last-meal-time safely;
+long	get_last_meal_time(t_philo *philo)
+{
+	long	meal_time;
+
+	pthread_mutex_lock(&philo->meal_mutex);
+	meal_time = philo->last_meal_time;
+	pthread_mutex_unlock(&philo->meal_mutex);
+	return (meal_time);
+}
+
+//* set the time to last-meal-time var safely;
+void	set_last_meal_time(t_philo *philo, long time)
+{
+	pthread_mutex_lock(&philo->meal_mutex);
+	philo->last_meal_time = time;
+	pthread_mutex_unlock(&philo->meal_mutex);
+}
+
+//* print the log safely;
+void	ft_print(t_philo *philo, char *msg)
+{
+	pthread_mutex_lock(&philo->table->write_lock);
+	if (!get_end_simulation(philo->table))
+		printf("%ld %d %s\n",
+			get_time_ms() - philo->table->start_simulation_time,
+			philo->philo_id,
+			msg);
+	pthread_mutex_unlock(&philo->table->write_lock);
+}
+
+//* set the start time of simulation;
+void	set_start_time(t_table *table)
+{
+	t_timeval	time;
+
+	gettimeofday(&time, NULL);
+	table->start_simulation_time = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+}
+
+long	get_time_ms(void)
+{
+	t_timeval	time;
+
+	gettimeofday(&time, NULL);
+	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+}
+
+
 
 //? debugging functions;
 void	printf_input_data(t_table table)

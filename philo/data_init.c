@@ -6,13 +6,13 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 12:57:14 by hamza_hat         #+#    #+#             */
-/*   Updated: 2025/08/04 16:54:38 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/06 11:29:56 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_header.h"
 
-//? assign forks for every philo in the table;
+//* assign forks for every philo in the table;
 static void	assign_forks_to_philos(t_philo *philo, t_fork *forks, int philo_pos)
 {
 	if ((philo->philo_id % 2) != 0) //* odd (1 3 5)
@@ -27,16 +27,21 @@ static void	assign_forks_to_philos(t_philo *philo, t_fork *forks, int philo_pos)
 	}
 }
 
-//? initialize table struct with default values;
-void	initialize_table_data(t_table *table)
+//* initialize table struct with default values;
+int	initialize_table_data(t_table *table)
 {
 	if (!table)
-		return ;
+		return (1);
 	memset(table, 0, sizeof(*table));
 	table->meals_nb = -1;
+	if (pthread_mutex_init(&table->end_simu_mutex, NULL))
+		return (1);
+	if (pthread_mutex_init(&table->write_lock, NULL))
+		return (1);
+	return (0);
 }
 
-//? initialyze forks data;
+//* initialyze forks data;
 int	forks_init(t_table *table)
 {
 	int	i;
@@ -52,7 +57,7 @@ int	forks_init(t_table *table)
 	return (0);
 }
 
-//? initialyze philos data;
+//* initialyze philos data;
 int	philos_init(t_table *table)
 {
 	int	i;
@@ -65,13 +70,15 @@ int	philos_init(t_table *table)
 		table->philos_arr[i].meals_counter = 0;
 		table->philos_arr[i].meals_full = false;
 		table->philos_arr[i].table = table;
+		if (pthread_mutex_init(&table->philos_arr[i].meal_mutex, NULL))
+			return (1);
 		assign_forks_to_philos(&table->philos_arr[i], table->forks_arr, i);
 		i++;
 	}
 	return (0);
 }
 
-//? initialyze philos threads;
+//* initialyze philos threads;
 int	init_philos_and_monitor_threads(t_table *table)
 {
 	int	i;
@@ -83,7 +90,16 @@ int	init_philos_and_monitor_threads(t_table *table)
 			return (1);
 		i++;
 	}
+	set_start_time(table);
 	if (pthread_create(&table->monitor, NULL, monitor_fun, table))
+		return (1);
+	return (0);
+}
+
+//* initialyze data table;
+int	data_init(t_table *table)
+{
+	if (forks_init(table) || philos_init(table))
 		return (1);
 	return (0);
 }

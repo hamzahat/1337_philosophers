@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 20:25:37 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/04 12:46:35 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/06 11:29:01 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int	parse_intput(int ac, char *av[], t_table *table)
 {
 	if (check_args_number(ac))
 		return (1);
-	initialize_table_data(table);
+	if (initialize_table_data(table))
+		return (1);
 	if (allocate_philos_arr(table))
 		return (1);
 	if (allocate_forks_arr(table))

@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:22:49 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/04 16:57:21 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/06 11:06:46 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,12 @@ int main(int ac, char *av[])
 //* parse input:
 	if (parse_intput(ac, av, &table))
 		return (ft_safe_malloc(0, FREE_ALL, NULL), 1);
-//* print t_table data:
+
+//* print t_table data: (debaging usage)
 	printf_input_data(table);
 
-//* initialize froks (mutex + fork_id):
-	if (forks_init(&table))
-		return (ft_safe_malloc(0, FREE_ALL, NULL), 1);
-
-//* initialize philos data + assign forks;
-	if (philos_init(&table))
+//* init data (mutexs + philos ...)
+	if (data_init(&table))
 		return (ft_safe_malloc(0, FREE_ALL, NULL), 1);
 
 //todo: philosophers dining (in progress)
@@ -40,5 +37,7 @@ int main(int ac, char *av[])
 }
 
 //? if a thread_init faild we should free the old threads (pthread_mutex_destroy()) !?
-//todo: handle if the philo_nb == 0
+//todo: handle if the philo number is 1 (first understand the problem then fix it)
 //! test if we give one philo / fork it will lead to deadlock !? (in assign_forks_to_philos())
+//todo: don't forget to destroy the mutexs
+

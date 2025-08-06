@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 18:35:19 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/04 15:31:33 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/06 11:28:25 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,10 @@ typedef struct s_philo
 {
 	t_fork			*second_fork;		//? ptr to t_fork (mutex) left fork
 	t_fork			*first_fork;		//? ptr to t_fork (mutex) right fork
+	pthread_mutex_t	meal_mutex;			//? mutex to protect last_meals_time + meals_counter vars
 	long			last_meal_time;		//? the last meal time
-	int				philo_id;			//? philo id
 	int				meals_counter;		//? meals eaten number
+	int				philo_id;			//? philo id
 	bool			meals_full;			//? boolian => if the philo eat all the meals = 1
 	pthread_t		thread_id;			//? philo is thread id
 	t_table			*table;				//? ptr to table contents (I don't know i will need it or now)
@@ -77,8 +78,10 @@ struct s_table
 	int				time_to_eat;	//? time to eat in ms
 	int				time_to_sleep;	//? time to sleep in ms
 	int				meals_nb;		//? number of meals every philo should eat!
-	long			start_simulation;//? the start time of simulation
+	long			start_simulation_time;//? the start time of simulation
 	bool			end_simulation; //? a philo die or all philos full (falg 1/0)
+	pthread_mutex_t	end_simu_mutex;	//? mutex to protect the end_simulation variable
+	pthread_mutex_t	write_lock;		//? mutex to protect the printf write
 };
 
 
@@ -97,7 +100,8 @@ void	printf_input_data(t_table table);
 int		init_philos_and_monitor_threads(t_table *table);
 int		philos_init(t_table *table);
 int		forks_init(t_table *table);
-void	initialize_table_data(t_table *table);
+int		initialize_table_data(t_table *table);
+int		data_init(t_table *table);
 
 //? --- memory management functions ---
 
@@ -114,8 +118,19 @@ void	*monitor_fun(void	*arg);
 
 //? --- utils functions ---
 
-long	get_time_pass(void);
+long	get_time_pass(void); //* usless (remove it if you don't need it)
+void	set_start_time(t_table *table);
+long	get_time_ms(void);
+void	ft_print(t_philo *philo, char *msg);
 
+//? --- Getters and Setters ---
+
+bool	get_end_simulation(t_table *table);
+void	set_end_simulation(t_table *table, bool value);
+int		get_meals_counter(t_philo *philo);
+void	increment_meals_counter(t_philo *philo);
+long	get_last_meal_time(t_philo *philo);
+void	set_last_meal_time(t_philo *philo, long time);
 
 #endif
 
