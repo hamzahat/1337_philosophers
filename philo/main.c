@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:22:49 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/06 11:06:46 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:26:15 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int main(int ac, char *av[])
 	t_table	table;
 
 //* parse input:
-	if (parse_intput(ac, av, &table))
+	if (parse_input(ac, av, &table))
 		return (ft_safe_malloc(0, FREE_ALL, NULL), 1);
 
 //* print t_table data: (debaging usage)
@@ -25,14 +25,14 @@ int main(int ac, char *av[])
 
 //* init data (mutexs + philos ...)
 	if (data_init(&table))
-		return (ft_safe_malloc(0, FREE_ALL, NULL), 1);
+		return (clean_up(&table), 1);
 
 //todo: philosophers dining (in progress)
 	if (philo_dining_start(&table))
-		return (ft_safe_malloc(0, FREE_ALL, NULL), 1);
+		return (clean_up(&table), 1);
 
 //todo clean memory resources!
-	clean_up();
+	clean_up(&table);
 	return (0);
 }
 
@@ -41,3 +41,6 @@ int main(int ac, char *av[])
 //! test if we give one philo / fork it will lead to deadlock !? (in assign_forks_to_philos())
 //todo: don't forget to destroy the mutexs
 
+//todo: you should handl if any (failur of memory) or (datat init) you should destroy + free memory resources and join threads
+//* hint: initialyze everything to NULL, then befor destroy it check if it's NULL
+ 

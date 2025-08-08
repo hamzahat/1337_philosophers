@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 09:50:36 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/06 14:00:49 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/07 21:34:45 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,21 @@ void	*philo_routine(void *arg)
 	t_philo		*philo;
 
 	philo = (t_philo *)arg;
-	while (!get_end_simulation(philo->table)) //* Loop until someone dies or all are full
+
+//* wait all threads to start at the same time !
+	while (!get_threads_ready(philo->table))
+		usleep(10);
+	
+//* Loop until someone dies or all are full
+	while (!get_end_simulation(philo->table))
 	{
+
+		//todo: check if the philo is full ?
+		//todo: eat
+		//todo: sleep
+		//todo: think
+
+
 	//* Take first fork → log
 		pthread_mutex_lock(&philo->first_fork->fork);
 		ft_print(philo, FORK);
@@ -82,8 +95,17 @@ void	*philo_routine(void *arg)
 //* the main fun of philosophers dining routine start;
 int	philo_dining_start(t_table *table)
 {
+//* make threads (philos + monitor);
 	if (init_philos_and_monitor_threads(table))
 		return (ft_putstr_fd(2, "pthread_create failed\n"), 1);
+
+//* set the start time of simulation;
+	set_start_time(table);
+
+//* after all threads are ready you can start the philos routine;
+	set_threads_ready(table, true);
+
+//* join all threads;
 	if (join_threads(table))
 		return (ft_putstr_fd(2, "pthread_join failed\n"), 1);
 

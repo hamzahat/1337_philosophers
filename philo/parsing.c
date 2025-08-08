@@ -6,14 +6,14 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 20:25:37 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/06 11:29:01 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/07 11:03:05 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_header.h"
 
 //? converte argv to valide numbers
-static int	converte_args_to_nb(t_table *table, char *av[])
+static int	convert_args_to_nb(t_table *table, char *av[])
 {
 	if (!table)
 		return (1);
@@ -43,7 +43,7 @@ static int	check_args_number(int ac)
 }
 
 //? main function of arguments parsing
-int	parse_intput(int ac, char *av[], t_table *table)
+int	parse_input(int ac, char *av[], t_table *table)
 {
 	if (check_args_number(ac))
 		return (1);
@@ -53,7 +53,7 @@ int	parse_intput(int ac, char *av[], t_table *table)
 		return (1);
 	if (allocate_forks_arr(table))
 		return (1);
-	if (converte_args_to_nb(table, av))
+	if (convert_args_to_nb(table, av))
 		return (1);
 	return (0);
 }

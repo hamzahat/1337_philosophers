@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:21:13 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/06 11:18:46 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/07 16:54:09 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,20 @@ int	allocate_forks_arr(t_table *table)
 }
 
 //? clean memory resources;
-void	clean_up(void)
+void	clean_up(t_table *table)
 {
+	int	i;
+
+	i = 0;
+	pthread_mutex_destroy(&table->end_simu_mutex);
+	pthread_mutex_destroy(&table->write_lock);
+	while (i < table->philo_nb)
+	{
+		pthread_mutex_destroy(&table->philos_arr[i].meal_mutex);
+		pthread_mutex_destroy(&table->forks_arr[i].fork);
+		i++;
+	}
+	
 	ft_safe_malloc(0, FREE_ALL, NULL);
 }
 
@@ -170,6 +182,20 @@ void	ft_print(t_philo *philo, char *msg)
 	pthread_mutex_unlock(&philo->table->write_lock);
 }
 
+//* sleep specific time + check if simulation finished;
+void	ft_usleep(long	time_in_ms, t_table *table)
+{
+	long	start_time;
+
+	start_time = get_time_ms();
+	while (!get_end_simulation(table))
+	{
+		if (get_time_ms() - start_time >= time_in_ms)
+			break ;
+		usleep(100);
+	}
+}
+
 //* set the start time of simulation;
 void	set_start_time(t_table *table)
 {
@@ -179,15 +205,33 @@ void	set_start_time(t_table *table)
 	table->start_simulation_time = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 }
 
+//* get the current time in milliseconds
 long	get_time_ms(void)
 {
 	t_timeval	time;
 
-	gettimeofday(&time, NULL);
+	gettimeofday(&time, NULL); 
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
+//* set a value to threads_ready bool;
+void	set_threads_ready(t_table *table, bool value)
+{
+	pthread_mutex_lock(&table->threads_ready_mtx);
+	table->threads_ready = value;
+	pthread_mutex_unlock(&table->threads_ready_mtx);
+}
 
+//* get a value from threads_ready safely;
+bool	get_threads_ready(t_table *table)
+{
+	bool	status;
+
+	pthread_mutex_lock(&table->threads_ready_mtx);
+	status = table->threads_ready;
+	pthread_mutex_unlock(&table->threads_ready_mtx);
+	return (status);
+}
 
 //? debugging functions;
 void	printf_input_data(t_table table)

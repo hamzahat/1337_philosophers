@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 18:35:19 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/06 11:28:25 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/07 16:58:01 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ struct s_table
 	int				meals_nb;		//? number of meals every philo should eat!
 	long			start_simulation_time;//? the start time of simulation
 	bool			end_simulation; //? a philo die or all philos full (falg 1/0)
+	bool			threads_ready;	//? bool to check if all threads are ready
+	pthread_mutex_t	threads_ready_mtx;	//? mutex to protect the threads_ready var
 	pthread_mutex_t	end_simu_mutex;	//? mutex to protect the end_simulation variable
 	pthread_mutex_t	write_lock;		//? mutex to protect the printf write
 };
@@ -89,7 +91,7 @@ struct s_table
 
 //? --- parsing functions ---
 
-int		parse_intput(int ac, char *av[], t_table *table);
+int		parse_input(int ac, char *av[], t_table *table);
 void	ft_putstr_fd(int fd, char *str);
 size_t	ft_strlen(char *str);
 int		ft_atoi(char *str);
@@ -108,7 +110,7 @@ int		data_init(t_table *table);
 void	*ft_safe_malloc(size_t size, int key, void *to_delete);
 int		allocate_philos_arr(t_table *table);
 int		allocate_forks_arr(t_table *table);
-void	clean_up(void);
+void	clean_up(t_table *table);
 
 //? --- philo dining functions ---
 
@@ -122,6 +124,7 @@ long	get_time_pass(void); //* usless (remove it if you don't need it)
 void	set_start_time(t_table *table);
 long	get_time_ms(void);
 void	ft_print(t_philo *philo, char *msg);
+void	ft_usleep(long	time_in_ms, t_table *table);
 
 //? --- Getters and Setters ---
 
@@ -131,6 +134,8 @@ int		get_meals_counter(t_philo *philo);
 void	increment_meals_counter(t_philo *philo);
 long	get_last_meal_time(t_philo *philo);
 void	set_last_meal_time(t_philo *philo, long time);
+void	set_threads_ready(t_table *table, bool value);
+bool	get_threads_ready(t_table *table);
 
 #endif
 
