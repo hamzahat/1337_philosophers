@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hamza_hat <hamza_hat@student.42.fr>        +#+  +:+       +#+        */
+/*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:22:49 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/08 12:03:06 by hamza_hat        ###   ########.fr       */
+/*   Updated: 2025/08/09 13:22:03 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@ int main(int ac, char *av[])
 //todo: don't forget to destroy the mutexs
 
 //todo: you should handl if any (failur of memory) or (datat init) you should destroy + free memory resources and join threads
+//* hint: initialyze everything to NULL, then befor destroy it check if it's NULL
 //* hint: initialyze everything to NULL, then befor destroy it check if it's NULL if you found that it's NULL so it's not initialyzed yet
- 
+//? if a thread faile we should do ptrjoin for the other threads or pthread_detach !? (katami dar pthread_join())
