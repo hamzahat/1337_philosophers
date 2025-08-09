@@ -3,16 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   philo_dining.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hamza_hat <hamza_hat@student.42.fr>        +#+  +:+       +#+        */
+/*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/02 09:50:36 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/08 14:33:12 by hamza_hat        ###   ########.fr       */
+/*   Created: 2025/08/09 13:23:18 by hbenmoha          #+#    #+#             */
+/*   Updated: 2025/08/09 22:17:19 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_header.h"
 
-//* join all threads
+//* philo thinking routine
+void	philo_think(t_philo *philo)
+{
+	ft_print(philo, THINK);
+}
+//* sleep routine of philo;
+void	philo_sleep(t_philo *philo)
+{
+	ft_print(philo, SLEEP);
+	ft_usleep(philo->table->time_to_sleep, philo->table);
+}
+
+//* eat routine of philo;
+void	philo_eat(t_philo *philo)
+{
+//* take first fork
+	pthread_mutex_lock(&philo->first_fork->fork);
+//* log: take a fork
+	ft_print(philo, FORK);
+//* take the second fork
+	pthread_mutex_unlock(&philo->second_fork->fork);
+	printf("philo %d took fork %p with id %d and %p with id %d\n", philo->philo_id, &philo->first_fork->fork, philo->first_fork->fork_id, &philo->second_fork->fork, philo->second_fork->fork_id);
+//* log: take a fork
+	ft_print(philo, FORK);
+//* set last meal time;
+	set_last_meal_time(philo, get_time_ms());
+	increment_meals_counter(philo);
+	//! ask chat about this thing ! here i use meal_mutex mutex for both increment_meals and get_meals_counter functions ! is it nomal
+//* log: eating
+	ft_print(philo, EAT);
+//* sleep time to eat:
+	ft_usleep(philo->table->time_to_eat, philo->table);
+//* set meals_full = true
+	if (philo->table->meals_nb != -1 && philo->meals_counter == philo->table->meals_nb)
+		set_philo_is_full(philo, true);
+//* unloc forks
+	pthread_mutex_unlock(&philo->first_fork->fork);
+	pthread_mutex_unlock(&philo->second_fork->fork);
+}
+
+//* join all threads;
 int	join_threads(t_table *table)
 {
 	int	i;
@@ -33,14 +73,34 @@ int	join_threads(t_table *table)
 void	*monitor_fun(void	*arg)
 {
 	t_table	*table;
+	int		i;
 
 	table = (t_table *)arg;
-	//todo: check if any philo die!
-	//todo: check if philos eat the number of meals_nb (it it has been set)
+
+// //* wait for all threads to be ready
+// 	while (!get_threads_ready(table))
+// 		usleep(10);
+	while (1)
+	{
+	//* check if philo die
+		i = 0;
+		while (i < table->philo_nb)
+		{
+			if (get_time_ms() - get_last_meal_time(&table->philos_arr[i]) >= table->time_to_die)
+			{
+				ft_print(&table->philos_arr[i], DIE);
+				set_end_simulation(table, true);
+				return (NULL);
+			}
+			i++;
+		}
+	//* check if philo is full
+		if (table->meals_nb != -1 && all_philos_are_full(table))
+			set_end_simulation(table, true);
+		usleep(100);
+	}
 	return (NULL);
 }
-
-//todo: inside the philo_routine fun make eat + sleep + thinking functions/actions
 
 //* the fun of philosophers routine;
 void	*philo_routine(void *arg)
@@ -49,30 +109,28 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 
-//* wait all threads to start at the same time !
-	while (!get_threads_ready(philo->table))
-		usleep(10);
-	
-	//todo: set last meal time (to check if philo diead)
+// // //* wait all threads to start at the same time !
+// 	while (!get_threads_ready(philo->table))
+// 		usleep(10);
 
 //* Loop until someone dies or all are full
+	set_last_meal_time(philo, get_time_ms());
+
 	while (!get_end_simulation(philo->table))
 	{
 
 	//* check if the philo is full ? (number of meals)
-		if (philo->table->meals_nb != -1)
-			if (get_meals_counter(philo) == philo->table->meals_nb)
-				break ;
+		if ((philo->table->meals_nb != -1) && (get_meals_counter(philo) == philo->table->meals_nb))
+			break ;
 
-		//todo: eat   (eat routine + log)
+	//* eat   (eat routine + log)
 		philo_eat(philo);
 
-		//todo: sleep (ms of sleep time + log)
+	//* sleep (ms of sleep time + log)
 		philo_sleep(philo);
 
-		//todo: think (print thinking)
+	//* think (print thinking)
 		philo_think(philo);
-
 	}
 
 	return (NULL);
@@ -86,7 +144,6 @@ int	philo_dining_start(t_table *table)
 		return (ft_putstr_fd(2, "pthread_create failed\n"), 1);
 
 //* set the start time of simulation;
-	set_start_time(table);
 
 //* after all threads are ready you can start the philos routine;
 	set_threads_ready(table, true);

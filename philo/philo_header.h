@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 18:35:19 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/07 16:58:01 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/09 22:06:48 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_philo
 	long			last_meal_time;		//? the last meal time
 	int				meals_counter;		//? meals eaten number
 	int				philo_id;			//? philo id
+	// pthread_mutex_t	meals_mutex;		//? mutex to protect meals_full var
 	bool			meals_full;			//? boolian => if the philo eat all the meals = 1
 	pthread_t		thread_id;			//? philo is thread id
 	t_table			*table;				//? ptr to table contents (I don't know i will need it or now)
@@ -78,6 +79,7 @@ struct s_table
 	int				time_to_eat;	//? time to eat in ms
 	int				time_to_sleep;	//? time to sleep in ms
 	int				meals_nb;		//? number of meals every philo should eat!
+	pthread_mutex_t	start_sim_mutex;		//?
 	long			start_simulation_time;//? the start time of simulation
 	bool			end_simulation; //? a philo die or all philos full (falg 1/0)
 	bool			threads_ready;	//? bool to check if all threads are ready
@@ -85,7 +87,6 @@ struct s_table
 	pthread_mutex_t	end_simu_mutex;	//? mutex to protect the end_simulation variable
 	pthread_mutex_t	write_lock;		//? mutex to protect the printf write
 };
-
 
 //* * * Functions prototypes * * *//
 
@@ -117,6 +118,10 @@ void	clean_up(t_table *table);
 int		philo_dining_start(t_table *table);
 void	*philo_routine(void *arg);
 void	*monitor_fun(void	*arg);
+void	philo_eat(t_philo *philo);
+void	philo_sleep(t_philo *philo);
+void	philo_think(t_philo *philo);
+bool	all_philos_are_full(t_table *table);
 
 //? --- utils functions ---
 
@@ -136,12 +141,7 @@ long	get_last_meal_time(t_philo *philo);
 void	set_last_meal_time(t_philo *philo, long time);
 void	set_threads_ready(t_table *table, bool value);
 bool	get_threads_ready(t_table *table);
+void	set_philo_is_full(t_philo *philo, bool value);
+bool	get_philo_is_full(t_philo *philo);
 
 #endif
-
-/*
-* * * structs & typedefs size:
-pthread_t       => 72 bytes
-pthread_mutex_t => 16 bytes
-
-*/

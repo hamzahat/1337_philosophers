@@ -5,7 +5,7 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/29 12:57:14 by hamza_hat         #+#    #+#             */
+/*   Created: 2025/07/29 12:57:14 by hbenmoha         #+#    #+#             */
 /*   Updated: 2025/08/07 15:30:10 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -39,6 +39,8 @@ int	initialize_table_data(t_table *table)
 	if (pthread_mutex_init(&table->write_lock, NULL))
 		return (1);
 	if (pthread_mutex_init(&table->threads_ready_mtx, NULL))
+		return (1);
+	if (pthread_mutex_init(&table->start_sim_mutex, NULL))
 		return (1);
 	return (0);
 }

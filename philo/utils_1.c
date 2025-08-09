@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:21:13 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/07 16:54:09 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/09 22:12:02 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,20 @@ void	clean_up(t_table *table)
 	pthread_mutex_destroy(&table->write_lock);
 	while (i < table->philo_nb)
 	{
+	printf("+++++++++++++\n");
 		pthread_mutex_destroy(&table->philos_arr[i].meal_mutex);
-		pthread_mutex_destroy(&table->forks_arr[i].fork);
 		i++;
 	}
-	
+	i = 0;
+	while (i < table->philo_nb)
+	{
+	printf("=======================\n");
+		pthread_mutex_destroy(&table->forks_arr[i].fork);
+		printf("add of mutex = %p\n", &table->forks_arr[i].fork);
+		i++;
+	}
+
+	printf("-------------\n");
 	ft_safe_malloc(0, FREE_ALL, NULL);
 }
 
@@ -174,11 +183,13 @@ void	set_last_meal_time(t_philo *philo, long time)
 void	ft_print(t_philo *philo, char *msg)
 {
 	pthread_mutex_lock(&philo->table->write_lock);
+	pthread_mutex_lock(&philo->table->start_sim_mutex);
 	if (!get_end_simulation(philo->table))
 		printf("%ld %d %s\n",
 			get_time_ms() - philo->table->start_simulation_time,
 			philo->philo_id,
 			msg);
+	pthread_mutex_unlock(&philo->table->start_sim_mutex);
 	pthread_mutex_unlock(&philo->table->write_lock);
 }
 
@@ -202,7 +213,9 @@ void	set_start_time(t_table *table)
 	t_timeval	time;
 
 	gettimeofday(&time, NULL);
+	pthread_mutex_lock(&table->start_sim_mutex);
 	table->start_simulation_time = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+	pthread_mutex_unlock(&table->start_sim_mutex);
 }
 
 //* get the current time in milliseconds
@@ -233,7 +246,41 @@ bool	get_threads_ready(t_table *table)
 	return (status);
 }
 
-//? debugging functions;
+//* set philo is full
+void	set_philo_is_full(t_philo *philo, bool value)
+{
+	pthread_mutex_lock(&philo->meal_mutex);
+	philo->meals_full = value;
+	pthread_mutex_unlock(&philo->meal_mutex);
+}
+
+//* check if philo is full
+bool	get_philo_is_full(t_philo *philo)
+{
+	bool	status;
+
+	pthread_mutex_lock(&philo->meal_mutex);
+	status = philo->meals_full;
+	pthread_mutex_unlock(&philo->meal_mutex);
+	return (status);
+}
+
+//* check if all philos are full
+bool	all_philos_are_full(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->philo_nb)
+	{
+		if (!get_philo_is_full(&table->philos_arr[i]))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+//* debugging functions;
 void	printf_input_data(t_table table)
 {
 	printf("correct input!\n");
