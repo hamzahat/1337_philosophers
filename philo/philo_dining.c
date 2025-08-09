@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_dining.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hamza_hat <hamza_hat@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 09:50:36 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/07 21:34:45 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/08 14:33:12 by hamza_hat        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,42 +53,28 @@ void	*philo_routine(void *arg)
 	while (!get_threads_ready(philo->table))
 		usleep(10);
 	
+	//todo: set last meal time (to check if philo diead)
+
 //* Loop until someone dies or all are full
 	while (!get_end_simulation(philo->table))
 	{
 
-		//todo: check if the philo is full ?
-		//todo: eat
-		//todo: sleep
-		//todo: think
+	//* check if the philo is full ? (number of meals)
+		if (philo->table->meals_nb != -1)
+			if (get_meals_counter(philo) == philo->table->meals_nb)
+				break ;
 
+		//todo: eat   (eat routine + log)
+		philo_eat(philo);
 
-	//* Take first fork → log
-		pthread_mutex_lock(&philo->first_fork->fork);
-		ft_print(philo, FORK);
-		
-	//* Take second fork → log
-		pthread_mutex_lock(&philo->second_fork->fork);
-		ft_print(philo, FORK);
+		//todo: sleep (ms of sleep time + log)
+		philo_sleep(philo);
 
-	//* Eat → update last_meal_time, log, usleep(time_to_eat)
-		ft_print(philo, EAT);
-		set_last_meal_time(philo, get_time_ms());
-		usleep(philo->table->time_to_eat * 1000);
+		//todo: think (print thinking)
+		philo_think(philo);
 
-	//* Unlock both forks
-		pthread_mutex_unlock(&philo->first_fork->fork);
-		pthread_mutex_unlock(&philo->second_fork->fork);
-
-	//* Sleep → log, usleep(time_to_sleep)
-		ft_print(philo, SLEEP);
-		usleep(philo->table->time_to_sleep * 1000);
-
-	//* Think → log
-		ft_print(philo, THINK);
 	}
-	
-	
+
 	return (NULL);
 }
 
@@ -108,6 +94,8 @@ int	philo_dining_start(t_table *table)
 //* join all threads;
 	if (join_threads(table))
 		return (ft_putstr_fd(2, "pthread_join failed\n"), 1);
+
+//* at this point all philos finished
 
 	return (0);
 }

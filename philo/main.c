@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hamza_hat <hamza_hat@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:22:49 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/07 15:26:15 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/08 12:03:06 by hamza_hat        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,5 @@ int main(int ac, char *av[])
 //todo: don't forget to destroy the mutexs
 
 //todo: you should handl if any (failur of memory) or (datat init) you should destroy + free memory resources and join threads
-//* hint: initialyze everything to NULL, then befor destroy it check if it's NULL
+//* hint: initialyze everything to NULL, then befor destroy it check if it's NULL if you found that it's NULL so it's not initialyzed yet
  
