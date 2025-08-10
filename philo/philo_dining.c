@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 13:23:18 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/09 22:17:19 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/10 08:29:53 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	philo_eat(t_philo *philo)
 //* log: take a fork
 	ft_print(philo, FORK);
 //* take the second fork
-	pthread_mutex_unlock(&philo->second_fork->fork);
+	pthread_mutex_lock(&philo->second_fork->fork);
 	printf("philo %d took fork %p with id %d and %p with id %d\n", philo->philo_id, &philo->first_fork->fork, philo->first_fork->fork_id, &philo->second_fork->fork, philo->second_fork->fork_id);
 //* log: take a fork
 	ft_print(philo, FORK);
