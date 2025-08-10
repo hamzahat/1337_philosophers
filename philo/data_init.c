@@ -15,12 +15,24 @@
 //* assign forks for every philo in the table;
 static void	assign_forks_to_philos(t_philo *philo, t_fork *forks, int philo_pos)
 {
-	if ((philo->philo_id % 2) != 0) //* odd (1 3 5)
-	{
-		philo->first_fork = &forks[(philo_pos + 1) % philo->table->philo_nb];
-		philo->second_fork = &forks[philo_pos];
-	}
-	else //* even (2 4 6)
+	// if (philo->table->philo_nb == 1)
+	// {
+	// 	philo->first_fork = &forks[philo_pos];
+	// }
+	// if ((philo->philo_id % 2) != 0) //* odd (1 3 5)
+	// {
+	// 	philo->first_fork = &forks[(philo_pos + 1) % philo->table->philo_nb];
+	// 	philo->second_fork = &forks[philo_pos];
+	// }
+	// else //* even (2 4 6)
+	// {
+	// 	philo->first_fork = &forks[philo_pos];
+	// 	philo->second_fork = &forks[(philo_pos + 1) % philo->table->philo_nb];
+	// }
+
+	philo->first_fork = &forks[(philo_pos + 1) % philo->table->philo_nb];
+	philo->second_fork = &forks[philo_pos];
+	if (philo->philo_id % 2 == 0)
 	{
 		philo->first_fork = &forks[philo_pos];
 		philo->second_fork = &forks[(philo_pos + 1) % philo->table->philo_nb];
@@ -40,8 +52,8 @@ int	initialize_table_data(t_table *table)
 		return (1);
 	if (pthread_mutex_init(&table->threads_ready_mtx, NULL))
 		return (1);
-	if (pthread_mutex_init(&table->start_sim_mutex, NULL))
-		return (1);
+	// if (pthread_mutex_init(&table->start_sim_mutex, NULL))
+		// return (1);
 	return (0);
 }
 

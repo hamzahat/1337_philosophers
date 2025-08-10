@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 18:35:19 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/09 22:06:48 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/10 13:33:51 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ struct s_table
 	int				time_to_eat;	//? time to eat in ms
 	int				time_to_sleep;	//? time to sleep in ms
 	int				meals_nb;		//? number of meals every philo should eat!
-	pthread_mutex_t	start_sim_mutex;		//?
+	// pthread_mutex_t	start_sim_mutex;	//? mutex to protect start_simulation_time var
 	long			start_simulation_time;//? the start time of simulation
 	bool			end_simulation; //? a philo die or all philos full (falg 1/0)
 	bool			threads_ready;	//? bool to check if all threads are ready
@@ -125,8 +125,8 @@ bool	all_philos_are_full(t_table *table);
 
 //? --- utils functions ---
 
-long	get_time_pass(void); //* usless (remove it if you don't need it)
-void	set_start_time(t_table *table);
+long	get_time_pass(void);
+// void	set_start_time(t_table *table);
 long	get_time_ms(void);
 void	ft_print(t_philo *philo, char *msg);
 void	ft_usleep(long	time_in_ms, t_table *table);
