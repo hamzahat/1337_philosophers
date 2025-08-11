@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 13:23:18 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/10 16:31:12 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/10 19:24:30 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,8 @@ int	philo_dining_start(t_table *table)
 
 	//* set the start time of simulation;
 	// set_start_time(table);
-	get_time_pass();
+	table->start_simulation_time = get_time_pass();
+	printf("start simulation time = %ld\n", table->start_simulation_time);
 
 	//* after all threads are ready you can start the philos routine;
 	set_threads_ready(table, true);

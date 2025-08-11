@@ -6,7 +6,7 @@
 #    By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/27 18:35:35 by hbenmoha          #+#    #+#              #
-#    Updated: 2025/08/10 16:38:59 by hbenmoha         ###   ########.fr        #
+#    Updated: 2025/08/10 19:20:07 by hbenmoha         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,3 +34,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean flcean re
+
+# check if this makefile is corect (no relink ...)
