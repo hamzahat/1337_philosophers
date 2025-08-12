@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:22:49 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/12 09:30:44 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/12 20:58:52 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,18 @@ int main(int ac, char *av[])
 	t_table	table;
 
 
-//* parse input:
-	if (parse_input(ac, av, &table))
+// parse input:
+	if (parse_input(ac, av, &table)) //* done
 		return (ft_safe_malloc(0, FREE_ALL, NULL), 1);
 
-//* print t_table data: (debaging usage)
+// print t_table data: (debaging usage)
 	printf_input_data(table);
 
-//* init data (mutexs + philos ...)
-	if (data_init(&table))
+// init data (mutexs + philos ...)
+	if (data_init(&table)) //* done
 		return (clean_up(&table), 1);
 
-//* philosophers dining (in progress)
+// philosophers dining (in progress)
 	if (philo_dining_start(&table))
 		return (clean_up(&table), 1);
 

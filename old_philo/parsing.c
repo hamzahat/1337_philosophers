@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 20:25:37 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/07 11:03:05 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/12 18:26:49 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,15 @@ static int	check_args_number(int ac)
 //? main function of arguments parsing
 int	parse_input(int ac, char *av[], t_table *table)
 {
-	if (check_args_number(ac))
+	if (check_args_number(ac)) //* done
 		return (1);
-	if (initialize_table_data(table))
+	if (initialize_table_data(table)) //* done
 		return (1);
-	if (allocate_philos_arr(table))
+	if (allocate_philos_arr(table)) //* done
 		return (1);
-	if (allocate_forks_arr(table))
+	if (allocate_forks_arr(table)) //* done
 		return (1);
-	if (convert_args_to_nb(table, av))
+	if (convert_args_to_nb(table, av)) //* done
 		return (1);
 	return (0);
 }

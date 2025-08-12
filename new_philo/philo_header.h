@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 09:44:29 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/12 13:02:32 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/12 19:04:14 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,31 +52,31 @@ typedef struct s_mem_node
 //? philo's struct:
 typedef struct s_philo
 {
-	pthread_mutex_t	*first_fork;
-	pthread_mutex_t	*second_fork;
-	long			last_meal_time;
-	int				meals_counter;
-	int				philo_id;
-	bool			philo_is_full;
-	pthread_t		thread_id;
-	t_table			*table;
+	pthread_mutex_t	*first_fork;			//? done
+	pthread_mutex_t	*second_fork;			//? done
+	long			last_meal_time;			//? done
+	int				meals_counter;			//? done
+	int				philo_id;				//? done
+	bool			philo_is_full;			//? done
+	pthread_t		thread_id;				//* not initialyzed yet!
+	t_table			*table;					//? done
 }					t_philo;
 
 //? table struct:
 struct s_table
 {
-	t_philo			*philos_arr;
-	pthread_mutex_t	*forks_arr;
-	pthread_t		monitor;
-	int				philos_nbr;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				meals_nbr;
-	long			start_simulation_time;
-	bool			end_simulation;
-	pthread_mutex_t	end_simu_mtx;
-	pthread_mutex_t	write_lock_mtx;
+	t_philo			*philos_arr;			//? done
+	pthread_mutex_t	*forks_arr;				//? done
+	pthread_t		monitor;				//* not initialyzed yet!
+	int				philos_nbr;				//? done
+	int				time_to_die;			//? done
+	int				time_to_eat;			//? done
+	int				time_to_sleep;			//? done
+	int				meals_nbr;				//? done
+	long			start_simulation_time;	//? done
+	bool			end_simulation;			//? done
+	pthread_mutex_t	end_simu_mtx;			//? done
+	pthread_mutex_t	write_lock_mtx;			//? done
 	//todo: add mutexs
 };
 
@@ -85,5 +85,11 @@ int		parse_input(int ac, char *av[]);
 void    ft_putstr_fd(int fd, char *str);
 size_t	ft_strlen(char *str);
 int		ft_atoi(char *str);
+void	*ft_safe_malloc(size_t size, int key, void *to_delete);
+int		data_init(char *av[], t_table *table);
+
+
+void	print_data_debugging(t_table *table);
+
 
 #endif
