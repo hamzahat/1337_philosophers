@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 13:23:18 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/10 19:24:30 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/12 11:37:26 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,61 +105,136 @@ void	*monitor_fun(void	*arg)
 }
 
 //* the fun of philosophers routine;
+// void	*philo_routine(void *arg)
+// {
+// 	t_philo		*philo;
+
+// 	philo = (t_philo *)arg;
+
+// 	//* wait all threads to start at the same time !
+// 	while (!get_threads_ready(philo->table))
+// 		usleep(10);
+
+// 	//? why I put this set_last_meal_time here! is not enough to put after the philo eat!?
+// 	set_last_meal_time(philo, get_time_ms());
+
+// 	//* Loop until someone dies or all are full
+// 	while (!get_end_simulation(philo->table))
+// 	{
+
+// 		//* check if the philo is full ? (number of meals)
+// 		if (get_philo_is_full(philo))
+// 			break ;
+
+// 		//* eat   (eat routine + log)
+// 		philo_eat(philo);
+
+// 		//* sleep (ms of sleep time + log)
+// 		philo_sleep(philo);
+
+// 		//* think (log)
+// 		philo_think(philo);
+// 	}
+
+// 	return (NULL);
+// }
+
 void	*philo_routine(void *arg)
 {
-	t_philo		*philo;
+    t_philo		*philo;
 
-	philo = (t_philo *)arg;
+    philo = (t_philo *)arg;
 
-	//* wait all threads to start at the same time !
-	while (!get_threads_ready(philo->table))
-		usleep(10);
+    // Wait for all threads to be ready
+    while (!get_threads_ready(philo->table))
+        usleep(10);
 
-	//? why I put this set_last_meal_time here! is not enough to put after the philo eat!?
-	set_last_meal_time(philo, get_time_ms());
+    // This is the only place last_meal_time should be set initially
+    // in the context of the monitor. And it should happen for all philos
+    // before the monitor loop starts checking.  A better way is to set it
+    // in the main thread before starting the monitor.
+    set_last_meal_time(philo, get_time_ms());
 
-	//* Loop until someone dies or all are full
-	while (!get_end_simulation(philo->table))
-	{
+    while (!get_end_simulation(philo->table))
+    {
+        if (get_philo_is_full(philo))
+            break;
 
-		//* check if the philo is full ? (number of meals)
-		if (get_philo_is_full(philo))
-			break ;
-
-		//* eat   (eat routine + log)
-		philo_eat(philo);
-
-		//* sleep (ms of sleep time + log)
-		philo_sleep(philo);
-
-		//* think (log)
-		philo_think(philo);
-	}
-
-	return (NULL);
+        philo_eat(philo);
+        philo_sleep(philo);
+        philo_think(philo);
+    }
+    return (NULL);
 }
 
 //* the main fun of philosophers dining routine start;
+// int	philo_dining_start(t_table *table)
+// {
+
+// 	//* make threads (philos + monitor);
+// 	if (init_philos_and_monitor_threads(table))
+// 		return (ft_putstr_fd(2, "pthread_create failed\n"), 1);
+
+// 	//* set the start time of simulation;
+// 	// set_start_time(table);
+// 	table->start_simulation_time = get_time_pass();
+// 	printf("start simulation time = %ld\n", table->start_simulation_time);
+
+// 	//* after all threads are ready you can start the philos routine;
+// 	set_threads_ready(table, true);
+
+// 	//* join all threads;
+// 	if (join_threads(table))
+// 		return (ft_putstr_fd(2, "pthread_join failed\n"), 1);
+
+// 	//* at this point all philos are finishe
+// 	printf("all philos are full!\n");
+// 	return (0);
+// }
+
+// int	philo_dining_start(t_table *table)
+// {
+//     if (init_philos_and_monitor_threads(table))
+//         return (ft_putstr_fd(2, "pthread_create failed\n"), 1);
+
+//     table->start_simulation_time = get_time_ms(); // Use the raw current time
+//     printf("start simulation time = %ld\n", table->start_simulation_time);
+
+//     set_threads_ready(table, true);
+
+//     if (join_threads(table))
+//         return (ft_putstr_fd(2, "pthread_join failed\n"), 1);
+
+//     printf("all philos are full!\n"); // This should now be accurate
+//     return (0);
+// }
+
+
 int	philo_dining_start(t_table *table)
 {
-
-	//* make threads (philos + monitor);
+	//* Create all philosopher threads and the monitor thread.
 	if (init_philos_and_monitor_threads(table))
-		return (ft_putstr_fd(2, "pthread_create failed\n"), 1);
+	{
+		ft_putstr_fd(2, "Error: pthread_create failed\n");
+		return (1);
+	}
 
-	//* set the start time of simulation;
-	// set_start_time(table);
-	table->start_simulation_time = get_time_pass();
-	printf("start simulation time = %ld\n", table->start_simulation_time);
+	//* Set the official start time of the simulation.
+	//* This is the absolute time from which all other timestamps will be calculated.
+	table->start_simulation_time = get_time_ms();
 
-	//* after all threads are ready you can start the philos routine;
+	//* Signal to all threads that they are now ready to start their main loops.
+	//* This ensures all threads begin their routines at roughly the same moment.
 	set_threads_ready(table, true);
 
-	//* join all threads;
+	//* Wait for all philosopher threads and the monitor thread to complete.
 	if (join_threads(table))
-		return (ft_putstr_fd(2, "pthread_join failed\n"), 1);
+	{
+		ft_putstr_fd(2, "Error: pthread_join failed\n");
+		return (1);
+	}
 
-	//* at this point all philos are finishe
-	printf("all philos are full!\n");
+	//* This message will now correctly appear only after the simulation has ended.
+	printf("Simulation has finished.\n");
 	return (0);
 }

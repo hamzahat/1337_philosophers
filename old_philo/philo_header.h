@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 18:35:19 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/12 10:28:14 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/12 11:34:31 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ bool	all_philos_are_full(t_table *table);
 
 //? --- utils functions ---
 
-long	get_time_pass(void);
+long	get_time_pass(t_table *table);
 // void	set_start_time(t_table *table);
 long	get_time_ms(void);
 void	ft_print(t_philo *philo, char *msg);

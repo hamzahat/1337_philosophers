@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 09:44:29 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/12 10:34:48 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/12 13:02:32 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,9 @@ struct s_table
 };
 
 //* * * Functions prototypes * * *//
-
-
+int		parse_input(int ac, char *av[]);
+void    ft_putstr_fd(int fd, char *str);
+size_t	ft_strlen(char *str);
+int		ft_atoi(char *str);
 
 #endif

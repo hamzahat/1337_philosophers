@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:21:13 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/10 15:09:10 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/12 11:35:44 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,29 +98,57 @@ void	clean_up(t_table *table) //todo: join threads if someting failed then destr
 }
 
 //* get the time pass from the start of the program until now!
-long	get_time_pass(void)
+// long	get_time_pass(void)
+// {
+// 	static long	start_time;
+// 	long		current_time;
+// 	t_timeval	time;
+
+// 	gettimeofday(&time, NULL);
+// 	current_time = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+// 	if (start_time == 0)
+// 		start_time = current_time;
+// 	return (current_time - start_time);
+// }
+
+
+// In utils_1.c
+
+//* get the time passed since the simulation started
+long	get_time_pass(t_table *table) // Pass the table to get the start time
 {
-	static long	start_time;
-	long		current_time;
+	long	current_time;
 	t_timeval	time;
 
 	gettimeofday(&time, NULL);
 	current_time = (time.tv_sec * 1000) + (time.tv_usec / 1000);
-	if (start_time == 0)
-		start_time = current_time;
-	return (current_time - start_time);
+	return (current_time - table->start_simulation_time);
 }
 
 //* print the log safely;
+// void	ft_print(t_philo *philo, char *msg)
+// {
+// 	if (get_philo_is_full(philo)) //* Redundant check ;( becaus i already check if simulation finished
+// 		return ;
+// 	pthread_mutex_lock(&philo->table->write_lock);
+// 	// pthread_mutex_lock(&philo->table->start_sim_mutex);
+// 	if (!get_end_simulation(philo->table))
+// 		printf("%ld %d %s\n", get_time_pass(), philo->philo_id, msg);
+// 	// pthread_mutex_unlock(&philo->table->start_sim_mutex);
+// 	pthread_mutex_unlock(&philo->table->write_lock);
+// }
+
+
 void	ft_print(t_philo *philo, char *msg)
 {
-	if (get_philo_is_full(philo)) //* Redundant check ;( becaus i already check if simulation finished
-		return ;
+	// Redundant check can be removed if the main loop is solid
+	// if (get_philo_is_full(philo))
+	// 	return ;
+
 	pthread_mutex_lock(&philo->table->write_lock);
-	// pthread_mutex_lock(&philo->table->start_sim_mutex);
 	if (!get_end_simulation(philo->table))
-		printf("%ld %d %s\n", get_time_pass(), philo->philo_id, msg);
-	// pthread_mutex_unlock(&philo->table->start_sim_mutex);
+		// Pass the philo's table pointer to the function
+		printf("%ld %d %s\n", get_time_pass(philo->table), philo->philo_id, msg);
 	pthread_mutex_unlock(&philo->table->write_lock);
 }
 
