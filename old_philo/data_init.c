@@ -15,12 +15,12 @@
 //* assign forks for every philo in the table;
 static void	assign_forks_to_philos(t_philo *philo, t_fork *forks, int philo_pos)
 {
-	if (philo->table->philo_nb == 1)
-	{
-		philo->first_fork = &forks[philo_pos];
-		printf("philo id = %d take first fork ptr => %p | id => %d\n", philo->philo_id ,philo->first_fork, philo->first_fork->fork_id);
-	}
-	else if ((philo->philo_id % 2) != 0) //* odd (1 3 5)
+	// if (philo->table->philo_nb == 1)
+	// {
+	// 	philo->first_fork = &forks[philo_pos];
+	// 	printf("philo id = %d take first fork ptr => %p | id => %d\n", philo->philo_id ,philo->first_fork, philo->first_fork->fork_id);
+	// }
+	if ((philo->philo_id % 2) != 0) //* odd (1 3 5)
 	{
 		philo->first_fork = &forks[(philo_pos + 1) % philo->table->philo_nb];
 		printf("philo id = %d take first fork ptr => %p | id => %d\n", philo->philo_id ,philo->first_fork, philo->first_fork->fork_id);

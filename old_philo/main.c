@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:22:49 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/09 18:44:33 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/12 09:30:44 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int main(int ac, char *av[])
 {
 	t_table	table;
+
 
 //* parse input:
 	if (parse_input(ac, av, &table))
