@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 18:35:19 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/12 09:52:08 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/12 10:28:14 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 typedef struct s_table t_table;
 typedef struct timeval t_timeval;
 
-//* ft_saf_malloc struct:
+//? ft_safe_malloc struct:
 typedef struct s_mem_node
 {
 	void				*address;

@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 09:44:29 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/12 09:52:16 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/12 10:34:48 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,48 @@
 # define DIE "died"
 
 //* * * Structures * * *//
+
+typedef struct s_table t_table;
+
+//? ft_safe_malloc struct:
+typedef struct s_mem_node
+{
+	void				*address;
+	struct s_mem_node	*next;
+}						t_mem_node;
+
+//? philo's struct:
+typedef struct s_philo
+{
+	pthread_mutex_t	*first_fork;
+	pthread_mutex_t	*second_fork;
+	long			last_meal_time;
+	int				meals_counter;
+	int				philo_id;
+	bool			philo_is_full;
+	pthread_t		thread_id;
+	t_table			*table;
+}					t_philo;
+
+//? table struct:
+struct s_table
+{
+	t_philo			*philos_arr;
+	pthread_mutex_t	*forks_arr;
+	pthread_t		monitor;
+	int				philos_nbr;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				meals_nbr;
+	long			start_simulation_time;
+	bool			end_simulation;
+	pthread_mutex_t	end_simu_mtx;
+	pthread_mutex_t	write_lock_mtx;
+	//todo: add mutexs
+};
+
+//* * * Functions prototypes * * *//
 
 
 
