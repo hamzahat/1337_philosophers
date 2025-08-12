@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 09:44:29 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/12 19:04:14 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/12 22:23:52 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ size_t	ft_strlen(char *str);
 int		ft_atoi(char *str);
 void	*ft_safe_malloc(size_t size, int key, void *to_delete);
 int		data_init(char *av[], t_table *table);
+int		dining_start(t_table *table);
 
 
 void	print_data_debugging(t_table *table);
