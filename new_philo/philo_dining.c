@@ -6,50 +6,116 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 20:56:05 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/12 23:12:40 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/13 17:47:16 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_header.h"
+
+void	philo_eat(t_philo *philo)
+{
+	pthread_mutex_lock(philo->first_fork);
+	ft_print(philo, FORK);
+	pthread_mutex_lock(philo->second_fork);
+	ft_print(philo, FORK);
+	set_last_meal_time(philo, get_time_ms());
+	increment_meals_counter(philo);
+	ft_print(philo, EAT);
+	ft_usleep(philo->table->time_to_eat, philo->table);
+	if (philo->table->meals_nbr != -1 && get_meals_counter(philo) == philo->table->meals_nbr)
+		set_philo_is_full(philo, true);
+	pthread_mutex_unlock(philo->first_fork);
+	pthread_mutex_unlock(philo->second_fork);
+	ft_print(philo, PUTDOWN);
+}
+
+void	philo_sleep(t_philo *philo)
+{
+	ft_print(philo, SLEEP);
+	ft_usleep(philo->table->time_to_sleep, philo->table);
+}
+
+void	philo_think(t_philo *philo)
+{
+	ft_print(philo, THINK);
+
+	if (philo->table->philos_nbr % 2 != 0)
+		usleep(100);
+}
 
 void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	printf("this is the philo fun => philo id = %d\n", philo->philo_id);
+	set_last_meal_time(philo, philo->table->start_simulation_time);
+
+	while (!get_end_simulation(philo->table))
+	{
+		philo_eat(philo);
+		philo_sleep(philo);
+		philo_think(philo);
+	}
+	
 	return (NULL);
 }
 
 void	*monitor_routine(void *arg)
 {
-	(void)arg;
-	printf("this is the monitor fun\n");
+	//todo: check if any philo has die
+	//todo: check if all philo are full
+	t_table	*table;
+	int		i;
+
+	table = (t_table *)arg;
+	while (!get_end_simulation(table))
+	{
+		i = 0;
+		while (i < table->philos_nbr && !get_end_simulation(table))
+		{
+			// printf("time from last meal = %ld\n", get_time_ms() - get_last_meal_time(&table->philos_arr[i]));
+			if ((get_time_ms() - get_last_meal_time(&table->philos_arr[i])) > table->time_to_die)
+			{
+				ft_print(&table->philos_arr[i], DIE);
+				set_end_simulation(table, true);
+				return (NULL);
+			}
+			i++;
+		}
+		if (table->meals_nbr != -1 && all_philos_are_full(table))
+			set_end_simulation(table, true);
+		usleep(100);
+	}
 	return (NULL);
 }
+
 int	dining_start(t_table *table)
 {
 	int	i;
 
 	i = 0;
 
+	table->start_simulation_time =  get_time_ms();
+
 	while (i < table->philos_nbr)
 	{
-		pthread_create(&table->philos_arr[i].thread_id, NULL, philo_routine, &table->philos_arr[i]);
+		if (pthread_create(&table->philos_arr[i].thread_id, NULL, philo_routine, &table->philos_arr[i]))
+			return (ft_putstr_fd(2, "Error: pthread_create failed\n"), 1);
 		i++;
 	}
 
-	pthread_create(&table->monitor, NULL, monitor_routine, table);
-	//todo: set simulation start time
-	// table->start_simulation_time = //todo: set the start time before create philos + set the last meal time of every philo = start time simulation
+	if (pthread_create(&table->monitor, NULL, monitor_routine, table))
+		return (ft_putstr_fd(2, "Error: pthread_create failed\n"), 1);
 
 	i = 0;
 	while (i < table->philos_nbr)
 	{
-		pthread_join(table->philos_arr[i].thread_id, NULL);
+		if (pthread_join(table->philos_arr[i].thread_id, NULL))
+			return (ft_putstr_fd(2, "Error: pthread_join failed\n"), 1);
 		i++;
 	}
-	pthread_join(table->monitor, NULL);
+	if (pthread_join(table->monitor, NULL))
+		return (ft_putstr_fd(2, "Error: pthread_join failed\n"), 1);
 	
 	return (0);
 }

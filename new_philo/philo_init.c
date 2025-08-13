@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 13:44:43 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/12 20:08:20 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/13 16:59:28 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,9 @@ int	data_init(char *av[], t_table *table)
 		// table->philos_arr[i].first_fork =  &table->forks_arr[i]; //todo: remove those lines 
 		// table->philos_arr[i].second_fork = &table->forks_arr[(i + 1) % table->philos_nbr];
 		table->philos_arr[i].table = table;
+		pthread_mutex_init(&table->philos_arr[i].last_meal_mtx, NULL);
+		pthread_mutex_init(&table->philos_arr[i].meals_counter_mtx, NULL);
+		pthread_mutex_init(&table->philos_arr[i].philo_is_full_mtx, NULL);
 		assign_forks(&table->philos_arr[i], table, i);
 		i++;
 	}
@@ -83,7 +86,7 @@ void	print_data_debugging(t_table *table)
 	printf("time to sleep => %d\n", table->time_to_sleep);
 	printf("meals nbr     => %d\n", table->meals_nbr);
 	printf("start simulation time => %ld\n",table->start_simulation_time);
-	printf("end simulation time => %d\n", table->end_simulation);
+	printf("end simulation flag => %d\n", table->end_simulation);
 	printf("end simu mtx        => %p\n", &table->end_simu_mtx);
 	printf("write_lock_mtx      => %p\n", &table->write_lock_mtx);
 	while (++i < table->philos_nbr)
@@ -97,6 +100,7 @@ void	print_data_debugging(t_table *table)
 		printf("philo id       => %d\n", table->philos_arr[i].philo_id);
 		printf("philo is full  => %d\n", table->philos_arr[i].philo_is_full);
 		printf("table ptr forme every philo => %p\n", table->philos_arr[i].table);
+		printf("last meal mutex => %p\n", &table->philos_arr[i].last_meal_mtx);
 		printf("first fork     => %lu\n", (unsigned long)(uintptr_t)table->philos_arr[i].first_fork);
 		printf("second fork    => %lu\n", (unsigned long)(uintptr_t)table->philos_arr[i].second_fork);
 		

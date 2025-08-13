@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 10:38:03 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/12 20:54:04 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/13 15:16:25 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(int ac, char *av[])
 		return (1);
 	if (data_init(av, &table))
 		return (1);
-	print_data_debugging(&table);
+	// print_data_debugging(&table);
 	//todo: dining start
 	if(dining_start(&table))
 		return (1);

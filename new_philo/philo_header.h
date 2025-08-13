@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 09:44:29 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/12 22:23:52 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/13 17:04:44 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@
 # define FORK "has taken a fork"
 # define DIE "died"
 
+# define PUTDOWN "has put down fork"
+
+
 //* * * Structures * * *//
 
 typedef struct s_table t_table;
@@ -56,10 +59,13 @@ typedef struct s_philo
 	pthread_mutex_t	*second_fork;			//? done
 	long			last_meal_time;			//? done
 	int				meals_counter;			//? done
+	pthread_mutex_t	meals_counter_mtx;		//? done
 	int				philo_id;				//? done
 	bool			philo_is_full;			//? done
-	pthread_t		thread_id;				//* not initialyzed yet!
+	pthread_mutex_t	philo_is_full_mtx;		//? done
+	pthread_t		thread_id;				//? done
 	t_table			*table;					//? done
+	pthread_mutex_t	last_meal_mtx;			//? done
 }					t_philo;
 
 //? table struct:
@@ -88,7 +94,18 @@ int		ft_atoi(char *str);
 void	*ft_safe_malloc(size_t size, int key, void *to_delete);
 int		data_init(char *av[], t_table *table);
 int		dining_start(t_table *table);
-
+long	get_time_ms(void);
+void	set_last_meal_time(t_philo *philo, long time);
+void	set_end_simulation(t_table *table, bool value);
+bool	get_end_simulation(t_table *table);
+void	ft_print(t_philo *philo, char *msg);
+void	increment_meals_counter(t_philo *philo);
+void	ft_usleep(long	time_in_ms, t_table *table);
+long	get_last_meal_time(t_philo *philo);
+int		get_meals_counter(t_philo *philo);
+bool	get_philo_is_full(t_philo *philo);
+void	set_philo_is_full(t_philo *philo, bool value);
+bool	all_philos_are_full(t_table *table);
 
 void	print_data_debugging(t_table *table);
 

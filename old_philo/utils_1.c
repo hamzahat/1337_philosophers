@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:21:13 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/12 11:35:44 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/13 14:21:06 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,17 +126,17 @@ long	get_time_pass(t_table *table) // Pass the table to get the start time
 }
 
 //* print the log safely;
-// void	ft_print(t_philo *philo, char *msg)
-// {
-// 	if (get_philo_is_full(philo)) //* Redundant check ;( becaus i already check if simulation finished
-// 		return ;
-// 	pthread_mutex_lock(&philo->table->write_lock);
-// 	// pthread_mutex_lock(&philo->table->start_sim_mutex);
-// 	if (!get_end_simulation(philo->table))
-// 		printf("%ld %d %s\n", get_time_pass(), philo->philo_id, msg);
-// 	// pthread_mutex_unlock(&philo->table->start_sim_mutex);
-// 	pthread_mutex_unlock(&philo->table->write_lock);
-// }
+void	ft_print(t_philo *philo, char *msg)
+{
+	if (get_philo_is_full(philo)) //* Redundant check ;( becaus i already check if simulation finished
+		return ;
+	pthread_mutex_lock(&philo->table->write_lock);
+	// pthread_mutex_lock(&philo->table->start_sim_mutex);
+	if (!get_end_simulation(philo->table))
+		printf("%ld %d %s\n", get_time_pass(philo->table), philo->philo_id, msg);
+	// pthread_mutex_unlock(&philo->table->start_sim_mutex);
+	pthread_mutex_unlock(&philo->table->write_lock);
+}
 
 
 void	ft_print(t_philo *philo, char *msg)
