@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 10:38:03 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/14 18:29:52 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:40:44 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	main(int ac, char *av[])
 
 
 //todo: handke if something failed!
-//todo: inside philo_eat every time you try to print someting ( ft_print it check if simulation failed ) so if simulation finished return a specific number then check this number in philo_eat if it mean that simulation failed then lock the locked mtx
 //? why you do the monitor as a single thread and not make the main thread as monitor
 //todo: fix parsing error => accept just the clean numbers ( 123abc => is not valide )
 //todo: go and check the last part of video of oceano when he talk about time to eat should be time to die * 2 to let philo live

@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 20:56:05 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/14 17:27:40 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/14 19:11:05 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,20 @@ void	philo_think(t_philo *philo)
 	if (philo->table->philos_nbr % 2 != 0)
 		usleep(100);
 }
+/*
+todo: inside philo_eat every time you try to print someting
+todo: ( ft_print it check if simulation failed )
+todo: so if simulation finished return a specific number then check this number in philo_eat,
+todo: if it mean that simulation failed then lock the locked mtx
+*/
 
 void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	set_last_meal_time(philo, philo->table->start_simulation_time);
-
+	set_last_meal_time(philo, philo->table->start_simulation_time);//? why I do this and not this below
+	// set_last_meal_time(philo, get_time_ms());
 	while (!get_end_simulation(philo->table))
 	{
 		philo_eat(philo);
@@ -66,6 +72,7 @@ void	*monitor_routine(void *arg)
 	int		i;
 
 	table = (t_table *)arg;
+	usleep(1000);
 	while (!get_end_simulation(table))
 	{
 		i = 0;
@@ -91,6 +98,8 @@ int	dining_start(t_table *table)
 	int	i;
 
 	i = 0;
+	
+	table->start_simulation_time =  get_time_ms();
 
 	if (table->philos_nbr == 1)
 	{
@@ -100,7 +109,6 @@ int	dining_start(t_table *table)
 		return (0);
 	}
 
-	table->start_simulation_time =  get_time_ms();
 
 	while (i < table->philos_nbr)
 	{
