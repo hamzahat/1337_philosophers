@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 11:52:18 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/13 17:04:51 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/14 09:50:52 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,29 @@ void	set_end_simulation(t_table *table, bool value)
 	pthread_mutex_unlock(&table->end_simu_mtx);
 }
 
+// void	ft_print(t_philo *philo, char *msg)
+// {
+// 	pthread_mutex_lock(&philo->table->write_lock_mtx);
+// 	if (!get_end_simulation(philo->table))
+// 		printf("%ld %d %s\n", get_time_ms() - philo->table->start_simulation_time, philo->philo_id, msg);
+// 	pthread_mutex_unlock(&philo->table->write_lock_mtx);
+// }
+
+// Corrected ft_print
 void	ft_print(t_philo *philo, char *msg)
 {
+	long	elapsed_time;
+
 	pthread_mutex_lock(&philo->table->write_lock_mtx);
-	if (!get_end_simulation(philo->table))
-		printf("%ld %d %s\n", get_time_ms() - philo->table->start_simulation_time, philo->philo_id, msg);
+	elapsed_time = get_time_ms() - philo->table->start_simulation_time;
+	
+	//* If simulation has ended, no messages are allowed EXCEPT the first "died" message.
+	if (get_end_simulation(philo->table) && strcmp(msg, DIE) != 0)
+	{
+		pthread_mutex_unlock(&philo->table->write_lock_mtx);
+		return ;
+	}
+	printf("%ld %d %s\n", elapsed_time, philo->philo_id, msg);
 	pthread_mutex_unlock(&philo->table->write_lock_mtx);
 }
 

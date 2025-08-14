@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:22:49 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/12 20:58:52 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/13 18:11:57 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int main(int ac, char *av[])
 		return (clean_up(&table), 1);
 
 // philosophers dining (in progress)
-	if (philo_dining_start(&table))
+	if (philo_dining_start(&table)) //* done
 		return (clean_up(&table), 1);
 
 //todo clean memory resources!

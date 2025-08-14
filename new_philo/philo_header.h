@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 09:44:29 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/13 17:04:44 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/13 18:12:09 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ struct s_table
 {
 	t_philo			*philos_arr;			//? done
 	pthread_mutex_t	*forks_arr;				//? done
-	pthread_t		monitor;				//* not initialyzed yet!
+	pthread_t		monitor;				//? done
 	int				philos_nbr;				//? done
 	int				time_to_die;			//? done
 	int				time_to_eat;			//? done

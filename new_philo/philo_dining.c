@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 20:56:05 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/13 17:47:16 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/14 09:55:42 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ void	*philo_routine(void *arg)
 
 void	*monitor_routine(void *arg)
 {
-	//todo: check if any philo has die
-	//todo: check if all philo are full
 	t_table	*table;
 	int		i;
 
@@ -73,11 +71,10 @@ void	*monitor_routine(void *arg)
 		i = 0;
 		while (i < table->philos_nbr && !get_end_simulation(table))
 		{
-			// printf("time from last meal = %ld\n", get_time_ms() - get_last_meal_time(&table->philos_arr[i]));
 			if ((get_time_ms() - get_last_meal_time(&table->philos_arr[i])) > table->time_to_die)
 			{
-				ft_print(&table->philos_arr[i], DIE);
 				set_end_simulation(table, true);
+				ft_print(&table->philos_arr[i], DIE);
 				return (NULL);
 			}
 			i++;
@@ -94,7 +91,6 @@ int	dining_start(t_table *table)
 	int	i;
 
 	i = 0;
-
 	table->start_simulation_time =  get_time_ms();
 
 	while (i < table->philos_nbr)
