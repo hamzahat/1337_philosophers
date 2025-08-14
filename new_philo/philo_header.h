@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 09:44:29 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/14 12:26:23 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:23:14 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,11 @@ bool	get_philo_is_full(t_philo *philo);
 void	set_philo_is_full(t_philo *philo, bool value);
 bool	all_philos_are_full(t_table *table);
 void	clean_up(t_table *table);
+int		join_philos(t_table *table, int nbr_to_join);
+void	destroy_forks(t_table *table, int count);
+void	destroy_table_last_meal_mtx(t_table *table, int count);
+void	destroy_table_meal_counter_mtx(t_table *table, int count);
+void	destroy_table_philo_is_full_mtx(t_table *table, int count);
 
 void	print_data_debugging(t_table *table);
 

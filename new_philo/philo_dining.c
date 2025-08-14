@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 20:56:05 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/14 10:20:21 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/14 17:27:40 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,33 +91,39 @@ int	dining_start(t_table *table)
 	int	i;
 
 	i = 0;
-	table->start_simulation_time =  get_time_ms();
 
 	if (table->philos_nbr == 1)
 	{
-		ft_print(&table->philos_arr[0], FORK);
+		ft_print(&table->philos_arr[0], FORK);//! error => it should be one real thread
 		ft_usleep(table->time_to_die, table);
 		ft_print(&table->philos_arr[0], DIE);
 		return (0);
 	}
 
+	table->start_simulation_time =  get_time_ms();
+
 	while (i < table->philos_nbr)
 	{
 		if (pthread_create(&table->philos_arr[i].thread_id, NULL, philo_routine, &table->philos_arr[i]))
-			return (ft_putstr_fd(2, "Error: pthread_create failed\n"), 1);
+		{
+			ft_putstr_fd(2, "Error: pthread_create failed\n");
+			set_end_simulation(table, true);
+			join_philos(table, i);
+			return (1);
+		}
 		i++;
 	}
 
 	if (pthread_create(&table->monitor, NULL, monitor_routine, table))
-		return (ft_putstr_fd(2, "Error: pthread_create failed\n"), 1);
-
-	i = 0;
-	while (i < table->philos_nbr)
 	{
-		if (pthread_join(table->philos_arr[i].thread_id, NULL))
-			return (ft_putstr_fd(2, "Error: pthread_join failed\n"), 1);
-		i++;
+		ft_putstr_fd(2, "Error: pthread_create failed\n");
+		set_end_simulation(table, true);
+		join_philos(table, table->philos_nbr);
+		return (1);
 	}
+	if (join_philos(table, table->philos_nbr))
+		return (ft_putstr_fd(2, "Error: pthread_join failed\n"), 1);
+	
 	if (pthread_join(table->monitor, NULL))
 		return (ft_putstr_fd(2, "Error: pthread_join failed\n"), 1);
 	
