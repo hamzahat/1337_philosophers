@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 11:52:18 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/14 18:20:11 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/14 21:10:29 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int	ft_atoi(char *str)
 		if (nb > INT_MAX)
 			return (-1);
 	}
+	if (*str) //! if you want to accept whit spaces after the number do this : if (*str && !is_space(str))
+		return (-1);
 	return ((int)nb);
 }
 
