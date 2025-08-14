@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 10:38:03 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/14 09:18:01 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/14 11:52:38 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	main(int ac, char *av[])
 	if(dining_start(&table))
 		return (1);
 	//todo: clean up
+	clean_up(&table);
 	return (0);
 }
 

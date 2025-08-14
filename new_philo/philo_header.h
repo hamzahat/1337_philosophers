@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 09:44:29 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/13 18:12:09 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/14 12:26:23 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,35 +55,34 @@ typedef struct s_mem_node
 //? philo's struct:
 typedef struct s_philo
 {
-	pthread_mutex_t	*first_fork;			//? done
-	pthread_mutex_t	*second_fork;			//? done
-	long			last_meal_time;			//? done
-	int				meals_counter;			//? done
-	pthread_mutex_t	meals_counter_mtx;		//? done
-	int				philo_id;				//? done
-	bool			philo_is_full;			//? done
-	pthread_mutex_t	philo_is_full_mtx;		//? done
-	pthread_t		thread_id;				//? done
-	t_table			*table;					//? done
-	pthread_mutex_t	last_meal_mtx;			//? done
+	pthread_mutex_t	*first_fork;
+	pthread_mutex_t	*second_fork;
+	long			last_meal_time;
+	int				meals_counter;
+	pthread_mutex_t	meals_counter_mtx;	
+	int				philo_id;
+	bool			philo_is_full;
+	pthread_mutex_t	philo_is_full_mtx;
+	pthread_t		thread_id;
+	t_table			*table;
+	pthread_mutex_t	last_meal_mtx;
 }					t_philo;
 
 //? table struct:
 struct s_table
 {
-	t_philo			*philos_arr;			//? done
-	pthread_mutex_t	*forks_arr;				//? done
-	pthread_t		monitor;				//? done
-	int				philos_nbr;				//? done
-	int				time_to_die;			//? done
-	int				time_to_eat;			//? done
-	int				time_to_sleep;			//? done
-	int				meals_nbr;				//? done
-	long			start_simulation_time;	//? done
-	bool			end_simulation;			//? done
-	pthread_mutex_t	end_simu_mtx;			//? done
-	pthread_mutex_t	write_lock_mtx;			//? done
-	//todo: add mutexs
+	t_philo			*philos_arr;
+	pthread_mutex_t	*forks_arr;
+	pthread_t		monitor;
+	int				philos_nbr;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				meals_nbr;
+	long			start_simulation_time;
+	bool			end_simulation;
+	pthread_mutex_t	end_simu_mtx;
+	pthread_mutex_t	write_lock_mtx;
 };
 
 //* * * Functions prototypes * * *//
@@ -106,6 +105,7 @@ int		get_meals_counter(t_philo *philo);
 bool	get_philo_is_full(t_philo *philo);
 void	set_philo_is_full(t_philo *philo, bool value);
 bool	all_philos_are_full(t_table *table);
+void	clean_up(t_table *table);
 
 void	print_data_debugging(t_table *table);
 

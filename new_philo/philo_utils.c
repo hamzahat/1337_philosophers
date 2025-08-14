@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 11:52:18 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/14 09:50:52 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/14 12:26:18 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,23 +97,13 @@ void	set_end_simulation(t_table *table, bool value)
 	pthread_mutex_unlock(&table->end_simu_mtx);
 }
 
-// void	ft_print(t_philo *philo, char *msg)
-// {
-// 	pthread_mutex_lock(&philo->table->write_lock_mtx);
-// 	if (!get_end_simulation(philo->table))
-// 		printf("%ld %d %s\n", get_time_ms() - philo->table->start_simulation_time, philo->philo_id, msg);
-// 	pthread_mutex_unlock(&philo->table->write_lock_mtx);
-// }
-
-// Corrected ft_print
 void	ft_print(t_philo *philo, char *msg)
 {
 	long	elapsed_time;
 
 	pthread_mutex_lock(&philo->table->write_lock_mtx);
 	elapsed_time = get_time_ms() - philo->table->start_simulation_time;
-	
-	//* If simulation has ended, no messages are allowed EXCEPT the first "died" message.
+
 	if (get_end_simulation(philo->table) && strcmp(msg, DIE) != 0)
 	{
 		pthread_mutex_unlock(&philo->table->write_lock_mtx);
@@ -199,4 +189,22 @@ bool	all_philos_are_full(t_table *table)
 		i++;
 	}
 	return (true);
+}
+
+void	clean_up(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->philos_nbr)
+	{
+		pthread_mutex_destroy(&table->forks_arr[i]);
+		pthread_mutex_destroy(&table->philos_arr[i].last_meal_mtx);
+		pthread_mutex_destroy(&table->philos_arr[i].meals_counter_mtx);
+		pthread_mutex_destroy(&table->philos_arr[i].philo_is_full_mtx);
+		i++;
+	}
+	pthread_mutex_destroy(&table->end_simu_mtx);
+	pthread_mutex_destroy(&table->write_lock_mtx);
+	ft_safe_malloc(0, FREE_ALL, NULL);
 }
