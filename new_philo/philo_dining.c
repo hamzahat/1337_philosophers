@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 20:56:05 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/14 09:55:42 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/14 10:20:21 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,14 @@ int	dining_start(t_table *table)
 
 	i = 0;
 	table->start_simulation_time =  get_time_ms();
+
+	if (table->philos_nbr == 1)
+	{
+		ft_print(&table->philos_arr[0], FORK);
+		ft_usleep(table->time_to_die, table);
+		ft_print(&table->philos_arr[0], DIE);
+		return (0);
+	}
 
 	while (i < table->philos_nbr)
 	{
