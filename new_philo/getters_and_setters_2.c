@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/15 13:31:14 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/15 13:32:47 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/15 14:13:16 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,13 @@ void	set_last_meal_time(t_philo *philo, long time)
 	pthread_mutex_lock(&philo->last_meal_mtx);
 	philo->last_meal_time = time;
 	pthread_mutex_unlock(&philo->last_meal_mtx);
+}
+
+//* get current time in ms;
+long	get_time_ms(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }

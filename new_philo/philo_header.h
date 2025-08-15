@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 09:44:29 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/15 12:09:27 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/15 16:56:35 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,15 @@ int		get_meals_counter(t_philo *philo);
 bool	get_end_simulation(t_table *table);
 bool	get_philo_is_full(t_philo *philo);
 bool	all_philos_are_full(t_table *table);
+void	*philo_routine(void *arg);
+int		create_philos_threads(t_table *table);
+int		init_forks(t_table *table);
+void	handle_philo_full_mtx_init_failure(t_table *table, int i);
+void	handle_meals_counter_mtx_init_failure(t_table *table, int i);
+void	handle_last_meal_mtx_init_failure(t_table *table, int i);
+void	init_philo_arr(t_table *table, int i);
+int		allocate_philos_and_forks(t_table *table);
+void	assign_forks(t_philo *philo, t_table *table, int philo_pos);
+int		malloc_failed_error(void);
 
 #endif
