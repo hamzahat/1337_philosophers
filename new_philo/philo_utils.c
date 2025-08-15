@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 11:52:18 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/14 21:10:29 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/15 11:48:14 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	ft_print(t_philo *philo, char *msg)
 	pthread_mutex_lock(&philo->table->write_lock_mtx);
 	elapsed_time = get_time_ms() - philo->table->start_simulation_time;
 
-	if (get_end_simulation(philo->table) && strcmp(msg, DIE) != 0)
+	if (get_end_simulation(philo->table) && ft_strcmp(msg, DIE) != 0)
 	{
 		pthread_mutex_unlock(&philo->table->write_lock_mtx);
 		return ;
@@ -135,7 +135,7 @@ int	get_meals_counter(t_philo *philo)
 }
 
 //* sleep specific time + check if simulation finished;
-void	ft_usleep(long	time_in_ms, t_table *table)
+void	ft_usleep(long time_in_ms, t_table *table)
 {
 	long	start_time;
 
@@ -269,4 +269,14 @@ void	destroy_table_philo_is_full_mtx(t_table *table, int count)
 		pthread_mutex_destroy(&table->philos_arr[i].philo_is_full_mtx);
 		i++;
 	}
+}
+
+int	ft_strcmp(char *str_1, char *str_2)
+{
+	int	i;
+
+	i = 0;
+	while (str_1[i] && str_2[i] && str_1[i] == str_2[i])
+		i++;
+	return (str_1[i] - str_2[i]);
 }

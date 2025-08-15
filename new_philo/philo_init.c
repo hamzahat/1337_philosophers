@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 13:44:43 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/14 18:30:35 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/15 12:25:53 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 static void	assign_forks(t_philo *philo, t_table *table, int philo_pos)
 {
-	int philo_nbr;
+	int	philo_nbr;
 
 	philo_nbr = table->philos_nbr;
 
+	if (philo_nbr == 1)
+		philo->first_fork = &table->forks_arr[philo_pos];
 	if (philo->philo_id % 2 == 0)
 	{
 		philo->first_fork = &table->forks_arr[philo_pos];
@@ -74,8 +76,6 @@ int	data_init(char *av[], t_table *table)
 		table->philos_arr[i].meals_counter = 0;
 		table->philos_arr[i].philo_id = i + 1;
 		table->philos_arr[i].philo_is_full = false;
-		// table->philos_arr[i].first_fork =  &table->forks_arr[i]; //todo: remove those lines 
-		// table->philos_arr[i].second_fork = &table->forks_arr[(i + 1) % table->philos_nbr];
 		table->philos_arr[i].table = table;
 		if (pthread_mutex_init(&table->philos_arr[i].last_meal_mtx, NULL))
 		{
@@ -111,34 +111,4 @@ int	data_init(char *av[], t_table *table)
 		i++;
 	}
 	return (0);
-}
-
-void	print_data_debugging(t_table *table)
-{
-	int i = -1;
-	printf("philos nbr    => %d\n", table->philos_nbr);
-	printf("time to die   => %d\n",table->time_to_die);
-	printf("time to eat   => %d\n", table->time_to_eat);
-	printf("time to sleep => %d\n", table->time_to_sleep);
-	printf("meals nbr     => %d\n", table->meals_nbr);
-	printf("start simulation time => %ld\n",table->start_simulation_time);
-	printf("end simulation flag => %d\n", table->end_simulation);
-	printf("end simu mtx        => %p\n", &table->end_simu_mtx);
-	printf("write_lock_mtx      => %p\n", &table->write_lock_mtx);
-	while (++i < table->philos_nbr)
-		printf("forks mutexs    => %p\n", &table->forks_arr[i]);
-	i = -1;
-	printf("philo data:\n");
-	while (++i < table->philos_nbr)
-	{
-		printf("last meal time => %ld\n", table->philos_arr[i].last_meal_time);
-		printf("meals counter  => %d\n", table->philos_arr[i].meals_counter);
-		printf("philo id       => %d\n", table->philos_arr[i].philo_id);
-		printf("philo is full  => %d\n", table->philos_arr[i].philo_is_full);
-		printf("table ptr forme every philo => %p\n", table->philos_arr[i].table);
-		printf("last meal mutex => %p\n", &table->philos_arr[i].last_meal_mtx);
-		printf("first fork     => %lu\n", (unsigned long)(uintptr_t)table->philos_arr[i].first_fork);
-		printf("second fork    => %lu\n", (unsigned long)(uintptr_t)table->philos_arr[i].second_fork);
-		
-	}
 }

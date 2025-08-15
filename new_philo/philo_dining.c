@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 20:56:05 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/14 19:11:05 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/15 12:19:57 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	philo_eat(t_philo *philo)
 		set_philo_is_full(philo, true);
 	pthread_mutex_unlock(philo->first_fork);
 	pthread_mutex_unlock(philo->second_fork);
-	ft_print(philo, PUTDOWN);
 }
 
 void	philo_sleep(t_philo *philo)
@@ -39,30 +38,22 @@ void	philo_think(t_philo *philo)
 {
 	ft_print(philo, THINK);
 
-	if (philo->table->philos_nbr % 2 != 0)
-		usleep(100);
+	// if (philo->table->philos_nbr % 2 != 0) //! should I keep it !? and why !?
+	// 	usleep(100);
 }
-/*
-todo: inside philo_eat every time you try to print someting
-todo: ( ft_print it check if simulation failed )
-todo: so if simulation finished return a specific number then check this number in philo_eat,
-todo: if it mean that simulation failed then lock the locked mtx
-*/
 
 void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	set_last_meal_time(philo, philo->table->start_simulation_time);//? why I do this and not this below
-	// set_last_meal_time(philo, get_time_ms());
+	set_last_meal_time(philo, philo->table->start_simulation_time); //! why this !?
 	while (!get_end_simulation(philo->table))
 	{
 		philo_eat(philo);
 		philo_sleep(philo);
 		philo_think(philo);
 	}
-	
 	return (NULL);
 }
 
@@ -98,7 +89,6 @@ int	dining_start(t_table *table)
 	int	i;
 
 	i = 0;
-	
 	table->start_simulation_time =  get_time_ms();
 
 	if (table->philos_nbr == 1)
@@ -108,7 +98,6 @@ int	dining_start(t_table *table)
 		ft_print(&table->philos_arr[0], DIE);
 		return (0);
 	}
-
 
 	while (i < table->philos_nbr)
 	{
@@ -130,7 +119,7 @@ int	dining_start(t_table *table)
 		return (1);
 	}
 	if (join_philos(table, table->philos_nbr))
-		return (ft_putstr_fd(2, "Error: pthread_join failed\n"), 1);
+		return (1);
 	
 	if (pthread_join(table->monitor, NULL))
 		return (ft_putstr_fd(2, "Error: pthread_join failed\n"), 1);
