@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 20:56:05 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/15 12:19:57 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/15 12:45:19 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,14 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	set_last_meal_time(philo, philo->table->start_simulation_time); //! why this !?
+	if (philo->table->philos_nbr == 1)
+	{
+		pthread_mutex_lock(philo->first_fork);
+		ft_print(philo, FORK);
+		ft_usleep(philo->table->time_to_die, philo->table);
+		pthread_mutex_unlock(philo->first_fork);
+		return (NULL);
+	}
 	while (!get_end_simulation(philo->table))
 	{
 		philo_eat(philo);
@@ -91,13 +99,13 @@ int	dining_start(t_table *table)
 	i = 0;
 	table->start_simulation_time =  get_time_ms();
 
-	if (table->philos_nbr == 1)
-	{
-		ft_print(&table->philos_arr[0], FORK);//! error => it should be one real thread
-		ft_usleep(table->time_to_die, table);
-		ft_print(&table->philos_arr[0], DIE);
-		return (0);
-	}
+	// if (table->philos_nbr == 1)
+	// {
+	// 	ft_print(&table->philos_arr[0], FORK);//! error => it should be one real thread
+	// 	ft_usleep(table->time_to_die, table);
+	// 	ft_print(&table->philos_arr[0], DIE);
+	// 	return (0);
+	// }
 
 	while (i < table->philos_nbr)
 	{

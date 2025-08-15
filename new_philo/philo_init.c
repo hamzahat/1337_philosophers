@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 13:44:43 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/15 12:25:53 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/15 12:33:32 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ static void	assign_forks(t_philo *philo, t_table *table, int philo_pos)
 
 	philo_nbr = table->philos_nbr;
 
-	if (philo_nbr == 1)
-		philo->first_fork = &table->forks_arr[philo_pos];
 	if (philo->philo_id % 2 == 0)
 	{
 		philo->first_fork = &table->forks_arr[philo_pos];
