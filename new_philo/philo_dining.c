@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/12 20:56:05 by hbenmoha          #+#    #+#             */
-/*   Updated: 2025/08/15 12:45:19 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/08/15 13:01:34 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	philo_sleep(t_philo *philo)
 void	philo_think(t_philo *philo)
 {
 	ft_print(philo, THINK);
-
 	// if (philo->table->philos_nbr % 2 != 0) //! should I keep it !? and why !?
 	// 	usleep(100);
 }
@@ -97,16 +96,7 @@ int	dining_start(t_table *table)
 	int	i;
 
 	i = 0;
-	table->start_simulation_time =  get_time_ms();
-
-	// if (table->philos_nbr == 1)
-	// {
-	// 	ft_print(&table->philos_arr[0], FORK);//! error => it should be one real thread
-	// 	ft_usleep(table->time_to_die, table);
-	// 	ft_print(&table->philos_arr[0], DIE);
-	// 	return (0);
-	// }
-
+	table->start_simulation_time = get_time_ms();
 	while (i < table->philos_nbr)
 	{
 		if (pthread_create(&table->philos_arr[i].thread_id, NULL, philo_routine, &table->philos_arr[i]))
@@ -118,7 +108,6 @@ int	dining_start(t_table *table)
 		}
 		i++;
 	}
-
 	if (pthread_create(&table->monitor, NULL, monitor_routine, table))
 	{
 		ft_putstr_fd(2, "Error: pthread_create failed\n");
@@ -128,9 +117,7 @@ int	dining_start(t_table *table)
 	}
 	if (join_philos(table, table->philos_nbr))
 		return (1);
-	
 	if (pthread_join(table->monitor, NULL))
 		return (ft_putstr_fd(2, "Error: pthread_join failed\n"), 1);
-	
 	return (0);
 }
